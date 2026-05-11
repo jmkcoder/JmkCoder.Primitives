@@ -1,11 +1,11 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="src/Primitives.Authentication.AspNetCore/Primitives.Authentication.AspNetCore.csproj" />
-    <Project Path="src/Primitives.Authentication.Client/Primitives.Authentication.Client.csproj" />
-    <Project Path="src/Primitives.Authentication/Primitives.Authentication.csproj" />
+  <Folder Name="/Authentication/src/">
+    <Project Path="Authentication/src/Primitives.Authentication.AspNetCore/Primitives.Authentication.AspNetCore.csproj" />
+    <Project Path="Authentication/src/Primitives.Authentication.Client/Primitives.Authentication.Client.csproj" />
+    <Project Path="Authentication/src/Primitives.Authentication/Primitives.Authentication.csproj" />
   </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/Primitives.Authentication.Tests/Primitives.Authentication.Tests.csproj" />
-    <Project Path="tests/Primitives.Authentication.Transport.Tests/Primitives.Authentication.Transport.Tests.csproj" />
+  <Folder Name="/Authentication/tests/">
+    <Project Path="Authentication/tests/Primitives.Authentication.Tests/Primitives.Authentication.Tests.csproj" />
+    <Project Path="Authentication/tests/Primitives.Authentication.Transport.Tests/Primitives.Authentication.Transport.Tests.csproj" />
   </Folder>
 </Solution>

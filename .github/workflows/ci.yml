@@ -79,9 +79,9 @@ jobs:
 
       - name: Pack
         run: |
-          dotnet pack src/Primitives.Authentication            --configuration Release --no-build --output ./nupkg
-          dotnet pack src/Primitives.Authentication.AspNetCore --configuration Release --no-build --output ./nupkg
-          dotnet pack src/Primitives.Authentication.Client     --configuration Release --no-build --output ./nupkg
+          dotnet pack Authentication/src/Primitives.Authentication            --configuration Release --no-build --output ./nupkg
+          dotnet pack Authentication/src/Primitives.Authentication.AspNetCore --configuration Release --no-build --output ./nupkg
+          dotnet pack Authentication/src/Primitives.Authentication.Client     --configuration Release --no-build --output ./nupkg
 
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v4
