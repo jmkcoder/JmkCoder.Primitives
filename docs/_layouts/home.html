@@ -871,18 +871,19 @@
       </a>
 
       <!-- Messaging -->
-      <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Messaging — coming soon">
-        <div class="lib-icon" style="color:var(--text-subtle);">
+      <a class="lib-card" href="{{ '/messaging/' | relative_url }}" role="listitem">
+        <div class="lib-icon" style="background:hsla(262,80%,65%,0.08);border-color:hsla(262,80%,65%,0.2);color:var(--purple);">
           <i class="bi bi-send-fill"></i>
         </div>
-        <span class="lib-badge lib-badge-soon">Coming soon</span>
+        <span class="lib-badge lib-badge-live">● Live</span>
         <h3>Primitives.Messaging</h3>
         <p>Broker-agnostic message publishing and consumption with retry, dead-letter, and transactional outbox patterns for reliable delivery.</p>
         <div class="lib-pkgs">
           <span class="lib-pkg">Primitives.Messaging</span>
           <span class="lib-pkg">Primitives.Messaging.RabbitMQ</span>
         </div>
-      </div>
+        <i class="bi bi-arrow-up-right lib-arrow" aria-hidden="true"></i>
+      </a>
 
       <!-- Resilience -->
       <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Resilience — coming soon">

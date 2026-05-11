@@ -15,4 +15,11 @@
   <Folder Name="/Caching/tests/">
     <Project Path="Caching/tests/Primitives.Caching.Tests/Primitives.Caching.Tests.csproj" />
   </Folder>
+  <Folder Name="/Messaging/src/">
+    <Project Path="Messaging/src/Primitives.Messaging/Primitives.Messaging.csproj" />
+    <Project Path="Messaging/src/Primitives.Messaging.RabbitMQ/Primitives.Messaging.RabbitMQ.csproj" />
+  </Folder>
+  <Folder Name="/Messaging/tests/">
+    <Project Path="Messaging/tests/Primitives.Messaging.Tests/Primitives.Messaging.Tests.csproj" />
+  </Folder>
 </Solution>

@@ -43,6 +43,11 @@ libraries:
     icon: bi-lightning-fill
     description: Unified caching over in-memory, Redis, and distributed providers with automatic invalidation.
 
+  - title: Messaging
+    url: /messaging/
+    icon: bi-send-fill
+    description: Broker-agnostic message publishing and consumption with retry, dead-letter, and transactional outbox patterns for reliable delivery.
+
 # ── Per-library sidebar navigation ───────────────────────────────────────────
 navigation:
   authentication:
@@ -135,3 +140,30 @@ navigation:
       items:
         - title: Configuration Reference
           url: /caching/reference/
+
+  messaging:
+    - title: Getting Started
+      items:
+        - title: Introduction
+          url: /messaging/
+        - title: Installation
+          url: /messaging/getting-started/
+
+    - title: Core Concepts
+      items:
+        - title: Publishing Messages
+          url: /messaging/publishing/
+        - title: Consuming Messages
+          url: /messaging/consuming/
+        - title: Transactional Outbox
+          url: /messaging/outbox/
+
+    - title: Providers
+      items:
+        - title: RabbitMQ Provider
+          url: /messaging/rabbitmq/
+
+    - title: Reference
+      items:
+        - title: Configuration Reference
+          url: /messaging/reference/
