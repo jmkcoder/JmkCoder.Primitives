@@ -7,12 +7,11 @@ title:       Primitives.Authentication
 description: Plug-and-play JWT authentication for every layer of your .NET 8 stack.
 
 # GitHub Pages settings
-# baseurl: sub-path if hosted at https://your-org.github.io/Primitives
-baseurl: "/Primitives"
-url:     "https://your-org.github.io"
+baseurl: "/JmkCoder.Primitives"
+url:     "https://jmkcoder.github.io"
 
 # Link shown in the navbar
-github_url: "https://github.com/your-org/Primitives"
+github_url: "https://github.com/jmkcoder/JmkCoder.Primitives"
 
 # Jekyll build
 markdown:   kramdown
