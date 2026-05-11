@@ -48,6 +48,11 @@ libraries:
     icon: bi-send-fill
     description: Broker-agnostic message publishing and consumption with retry, dead-letter, and transactional outbox patterns for reliable delivery.
 
+  - title: Resilience
+    url: /resilience/
+    icon: bi-shield-fill-check
+    description: Circuit breakers, retry policies, bulkheads, and timeouts built on Polly v8 — pre-wired for .NET DI with zero boilerplate.
+
 # ── Per-library sidebar navigation ───────────────────────────────────────────
 navigation:
   authentication:
@@ -167,3 +172,23 @@ navigation:
       items:
         - title: Configuration Reference
           url: /messaging/reference/
+
+  resilience:
+    - title: Getting Started
+      items:
+        - title: Introduction
+          url: /resilience/
+        - title: Installation
+          url: /resilience/getting-started/
+
+    - title: Core Concepts
+      items:
+        - title: Strategies
+          url: /resilience/strategies/
+        - title: Named Pipelines
+          url: /resilience/pipelines/
+
+    - title: Reference
+      items:
+        - title: Configuration Reference
+          url: /resilience/reference/

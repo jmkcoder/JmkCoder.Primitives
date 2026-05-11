@@ -86,6 +86,7 @@ jobs:
           dotnet pack Caching/src/Primitives.Caching.Redis                   --configuration Release --no-build --output ./nupkg
           dotnet pack Messaging/src/Primitives.Messaging                     --configuration Release --no-build --output ./nupkg
           dotnet pack Messaging/src/Primitives.Messaging.RabbitMQ            --configuration Release --no-build --output ./nupkg
+          dotnet pack Resilience/src/Primitives.Resilience                   --configuration Release --no-build --output ./nupkg
 
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v4

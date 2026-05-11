@@ -22,4 +22,10 @@
   <Folder Name="/Messaging/tests/">
     <Project Path="Messaging/tests/Primitives.Messaging.Tests/Primitives.Messaging.Tests.csproj" />
   </Folder>
+  <Folder Name="/Resilience/src/">
+    <Project Path="Resilience/src/Primitives.Resilience/Primitives.Resilience.csproj" />
+  </Folder>
+  <Folder Name="/Resilience/tests/">
+    <Project Path="Resilience/tests/Primitives.Resilience.Tests/Primitives.Resilience.Tests.csproj" />
+  </Folder>
 </Solution>
