@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>Primitives.Observability.Serilog</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>JmkCoder</Authors>
+    <Description>Serilog integration for Primitives.Observability. Replaces the default Microsoft.Extensions.Logging providers with Serilog, enabling structured log enrichment, filtering, and sink configuration (including Serilog.Sinks.OpenTelemetry for OTLP log export).</Description>
+    <PackageTags>serilog;opentelemetry;observability;logging;structured-logging;nuget</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jmkcoder/JmkCoder.Primitives</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jmkcoder/JmkCoder.Primitives.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog"                       Version="4.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging"   Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Primitives.Observability\Primitives.Observability.csproj" />
+  </ItemGroup>
+
+</Project>

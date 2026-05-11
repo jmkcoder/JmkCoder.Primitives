@@ -63,6 +63,11 @@ libraries:
     icon: bi-diagram-3-fill
     description: Tenant resolution, per-tenant configuration, and data-isolation strategies that slot into any existing ASP.NET Core application.
 
+  - title: Observability
+    url: /observability/
+    icon: bi-activity
+    description: OpenTelemetry-based distributed tracing, metrics, and structured logging with Serilog and Log4Net backends for .NET 8 applications.
+
 # ── Per-library sidebar navigation ───────────────────────────────────────────
 navigation:
   authentication:
@@ -242,3 +247,23 @@ navigation:
       items:
         - title: Configuration Reference
           url: /multitenancy/reference/
+
+  observability:
+    - title: Getting Started
+      items:
+        - title: Introduction
+          url: /observability/
+        - title: Installation
+          url: /observability/getting-started/
+
+    - title: Configuration
+      items:
+        - title: Exporters
+          url: /observability/exporters/
+        - title: Logging (Serilog + Log4Net)
+          url: /observability/logging/
+
+    - title: Reference
+      items:
+        - title: Configuration Reference
+          url: /observability/reference/

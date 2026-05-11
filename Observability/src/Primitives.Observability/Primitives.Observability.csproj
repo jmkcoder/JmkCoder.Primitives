@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- NU1902: OpenTelemetry.Exporter.OpenTelemetryProtocol has a moderate advisory (GHSA-4625-4j76-fww9).
+         No patched version is available on NuGet. Suppressed here; high/critical (NU1903/NU1904) remain errors. -->
+    <NoWarn>NU1902</NoWarn>
+    <Deterministic>true</Deterministic>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>Primitives.Observability</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>JmkCoder</Authors>
+    <Description>OpenTelemetry-based observability for .NET 8 — distributed tracing, metrics, and structured logging with fluent DI registration. Includes built-in instrumentation for ASP.NET Core and HttpClient, plus OTLP and console exporters.</Description>
+    <PackageTags>opentelemetry;observability;tracing;metrics;logging;otel;nuget</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jmkcoder/JmkCoder.Primitives</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jmkcoder/JmkCoder.Primitives.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry"                                   Version="1.10.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting"               Version="1.10.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"       Version="1.10.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http"             Version="1.10.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console"                 Version="1.10.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol"   Version="1.10.0" />
+  </ItemGroup>
+
+</Project>

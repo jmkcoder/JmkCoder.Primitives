@@ -41,4 +41,12 @@
   <Folder Name="/Multitenancy/tests/">
     <Project Path="Multitenancy/tests/Primitives.Multitenancy.Tests/Primitives.Multitenancy.Tests.csproj" />
   </Folder>
+  <Folder Name="/Observability/src/">
+    <Project Path="Observability/src/Primitives.Observability/Primitives.Observability.csproj" />
+    <Project Path="Observability/src/Primitives.Observability.Serilog/Primitives.Observability.Serilog.csproj" />
+    <Project Path="Observability/src/Primitives.Observability.Log4Net/Primitives.Observability.Log4Net.csproj" />
+  </Folder>
+  <Folder Name="/Observability/tests/">
+    <Project Path="Observability/tests/Primitives.Observability.Tests/Primitives.Observability.Tests.csproj" />
+  </Folder>
 </Solution>

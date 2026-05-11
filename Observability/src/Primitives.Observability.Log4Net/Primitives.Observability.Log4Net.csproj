@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- NU1902: log4net has a moderate advisory (GHSA-4f7c-pmjv-c25w) regarding BinaryFormatter.
+         On .NET 8 BinaryFormatter is disabled by default, mitigating the risk.
+         No patched log4net version exists. Suppressed here; high/critical remain errors. -->
+    <NoWarn>NU1902</NoWarn>
+    <Deterministic>true</Deterministic>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>Primitives.Observability.Log4Net</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>JmkCoder</Authors>
+    <Description>Log4Net integration for Primitives.Observability. Wires log4net into Microsoft.Extensions.Logging so that log4net appenders (file, rolling file, SMTP, etc.) receive structured log entries alongside OpenTelemetry traces and metrics.</Description>
+    <PackageTags>log4net;opentelemetry;observability;logging;nuget</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jmkcoder/JmkCoder.Primitives</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jmkcoder/JmkCoder.Primitives.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net"                                        Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="6.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Primitives.Observability\Primitives.Observability.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -90,6 +90,9 @@ jobs:
           dotnet pack Storage/src/Primitives.Storage                         --configuration Release --no-build --output ./nupkg
           dotnet pack Storage/src/Primitives.Storage.Azure                   --configuration Release --no-build --output ./nupkg
           dotnet pack Multitenancy/src/Primitives.Multitenancy               --configuration Release --no-build --output ./nupkg
+          dotnet pack Observability/src/Primitives.Observability              --configuration Release --no-build --output ./nupkg
+          dotnet pack Observability/src/Primitives.Observability.Serilog      --configuration Release --no-build --output ./nupkg
+          dotnet pack Observability/src/Primitives.Observability.Log4Net      --configuration Release --no-build --output ./nupkg
 
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v4
