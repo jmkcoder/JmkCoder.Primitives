@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <title>{% if page.title and page.title != 'Introduction' %}{{ page.title | escape }} · {% endif %}{{ site.title | escape }}</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ '/assets/css/docs.css' | relative_url }}">
+</head>
+<body>
+
+<!-- ── Top navbar ─────────────────────────────────────────────── -->
+<header class="bd-header navbar navbar-dark fixed-top" role="banner">
+  <div class="container-fluid px-3 px-md-4">
+
+    <button class="btn btn-link text-white d-md-none border-0 p-0 me-3"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#bdSidebar"
+            aria-controls="bdSidebar"
+            aria-label="Toggle navigation">
+      <i class="bi bi-list fs-4"></i>
+    </button>
+
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-semibold me-auto"
+       href="{{ '/' | relative_url }}">
+      <i class="bi bi-grid-fill"></i>
+      <span>JmkCoder Primitives</span>
+    </a>
+
+    <div class="d-flex align-items-center gap-3">
+      <span class="badge rounded-pill text-bg-secondary fw-normal">v1.0</span>
+      <a class="text-white text-decoration-none d-flex align-items-center"
+         href="{{ site.github_url }}"
+         target="_blank"
+         rel="noopener noreferrer"
+         title="View source on GitHub">
+        <i class="bi bi-github fs-5"></i>
+      </a>
+    </div>
+
+  </div>
+</header>
+
+<!-- ── Page shell ─────────────────────────────────────────────── -->
+<div class="bd-layout">
+
+  <!-- ── Sidebar ──────────────────────────────────────────────── -->
+  <aside class="bd-sidebar-wrapper offcanvas-md offcanvas-start"
+         id="bdSidebar"
+         tabindex="-1"
+         aria-label="Documentation navigation">
+
+    <!-- Mobile header -->
+    <div class="offcanvas-header border-bottom px-4 py-3 d-md-none">
+      <span class="fw-semibold d-flex align-items-center gap-2">
+        <i class="bi bi-grid-fill"></i>JmkCoder Primitives
+      </span>
+      <button type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#bdSidebar"
+              aria-label="Close navigation"></button>
+    </div>
+
+    <!-- Nav tree -->
+    <nav class="bd-sidebar offcanvas-body p-0" aria-label="Docs navigation">
+      {% assign lib_nav = site.navigation[page.library] %}
+      {% for section in lib_nav %}
+      <div class="bd-sidebar-section">
+        <span class="bd-sidebar-heading">{{ section.title }}</span>
+        <ul class="list-unstyled mb-0">
+          {% for item in section.items %}
+          <li>
+            <a href="{{ item.url | relative_url }}"
+               class="bd-sidebar-link{% if page.url == item.url %} active{% endif %}">
+              {{ item.title }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </nav>
+
+  </aside>
+
+  <!-- ── Main content ─────────────────────────────────────────── -->
+  <main class="bd-main" id="main-content">
+
+    {% if page.title or page.description %}
+    <div class="bd-intro">
+      {% if page.title %}<h1 class="bd-title">{{ page.title }}</h1>{% endif %}
+      {% if page.description %}<p class="bd-lead">{{ page.description }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="bd-content">
+      {{ content }}
+    </div>
+
+    <!-- ── Prev / Next ─────────────────────────────────────────── -->
+    {% assign prev_item = nil %}
+    {% assign next_item = nil %}
+    {% assign found_current = false %}
+    {% assign lib_nav = site.navigation[page.library] %}
+    {% for section in lib_nav %}
+      {% for item in section.items %}
+        {% if found_current and next_item == nil %}
+          {% assign next_item = item %}
+        {% endif %}
+        {% if item.url == page.url %}
+          {% assign found_current = true %}
+        {% endif %}
+        {% unless found_current %}
+          {% assign prev_item = item %}
+        {% endunless %}
+      {% endfor %}
+    {% endfor %}
+
+    <div class="bd-pagination">
+      {% if prev_item %}
+      <a href="{{ prev_item.url | relative_url }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>{{ prev_item.title }}
+      </a>
+      {% else %}
+      <div></div>
+      {% endif %}
+      {% if next_item %}
+      <a href="{{ next_item.url | relative_url }}" class="btn btn-outline-primary ms-auto">
+        {{ next_item.title }}<i class="bi bi-arrow-right ms-1"></i>
+      </a>
+      {% endif %}
+    </div>
+
+  </main>
+
+</div><!-- /.bd-layout -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+  // Wrap every table in a scrollable div so long rows scroll horizontally
+  document.querySelectorAll('.bd-content table').forEach(function(t) {
+    if (!t.parentElement.classList.contains('table-wrapper')) {
+      var w = document.createElement('div');
+      w.className = 'table-wrapper';
+      t.parentNode.insertBefore(w, t);
+      w.appendChild(t);
+    }
+  });
+</script>
+</body>
+</html>

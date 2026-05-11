@@ -1,0 +1,107 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# JmkCoder Primitives — Jekyll / GitHub Pages
+# Update `baseurl` and `url` to match your GitHub organisation and repo name.
+# ─────────────────────────────────────────────────────────────────────────────
+
+title:       JmkCoder Primitives
+description: A collection of .NET 8 libraries for building modern, secure applications.
+
+# GitHub Pages settings
+baseurl: "/JmkCoder.Primitives"
+url:     "https://jmkcoder.github.io"
+
+# Link shown in the navbar
+github_url: "https://github.com/jmkcoder/JmkCoder.Primitives"
+
+# Jekyll build
+markdown:   kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+
+permalink: /:path/
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+
+# ── Top-level library navigation ─────────────────────────────────────────────
+libraries:
+  - title: Authentication
+    url: /authentication/
+    icon: bi-shield-lock-fill
+    description: Plug-and-play JWT authentication for every layer of your .NET 8 stack.
+
+# ── Per-library sidebar navigation ───────────────────────────────────────────
+navigation:
+  authentication:
+    - title: Getting Started
+      items:
+        - title: Introduction
+          url: /authentication/
+        - title: Installation
+          url: /authentication/getting-started/
+
+    - title: Strategies
+      items:
+        - title: Overview
+          url: /authentication/strategies/
+        - title: OIDC (OAuth 2.0)
+          url: /authentication/strategies/oidc/
+        - title: Username / Password
+          url: /authentication/strategies/username-password/
+        - title: Kerberos / Negotiate
+          url: /authentication/strategies/kerberos/
+        - title: API Key
+          url: /authentication/strategies/api-key/
+        - title: Custom Strategy
+          url: /authentication/strategies/custom/
+        - title: JWT & Refresh Tokens
+          url: /authentication/jwt-tokens/
+
+    - title: Server — ASP.NET Core
+      items:
+        - title: Overview
+          url: /authentication/server/
+        - title: Token Endpoints
+          url: /authentication/server/token-endpoints/
+        - title: JWT Bearer Validation
+          url: /authentication/server/jwt-bearer/
+        - title: gRPC Interceptor
+          url: /authentication/server/grpc/
+        - title: SignalR Hub Filter
+          url: /authentication/server/signalr/
+        - title: Message Queue
+          url: /authentication/server/message-queue/
+
+    - title: Client
+      items:
+        - title: Overview
+          url: /authentication/client/
+        - title: HTTP / HttpClient
+          url: /authentication/client/http/
+        - title: gRPC Client
+          url: /authentication/client/grpc/
+        - title: SignalR Client
+          url: /authentication/client/signalr/
+        - title: Message Queue
+          url: /authentication/client/message-queue/
+
+    - title: Advanced
+      items:
+        - title: Caching
+          url: /authentication/caching/
+        - title: Health Checks
+          url: /authentication/health-checks/
+        - title: Extending
+          url: /authentication/extending/
+        - title: Architecture
+          url: /authentication/architecture/
+        - title: Configuration Reference
+          url: /authentication/reference/

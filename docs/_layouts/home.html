@@ -1,0 +1,1349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JmkCoder Primitives — Focused, production-grade .NET 8 libraries.">
+  <title>JmkCoder Primitives — Focused .NET 8 Libraries</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" crossorigin="anonymous">
+
+  <style>
+    /* =================================================================
+       shadcn/ui zinc dark design system — JmkCoder Primitives Landing
+       ================================================================= */
+
+    :root {
+      --bg:             hsl(240, 10%, 3.9%);
+      --bg-card:        hsl(240, 10%, 5.5%);
+      --bg-muted:       hsl(240, 5%, 8%);
+      --border:         hsl(240, 3.7%, 15.9%);
+      --border-hover:   hsl(240, 5%, 26%);
+      --text:           hsl(0, 0%, 98%);
+      --text-muted:     hsl(240, 5%, 64.9%);
+      --text-subtle:    hsl(240, 4%, 40%);
+      --amber:          hsl(47, 96%, 53%);
+      --amber-dim:      hsla(47, 96%, 53%, 0.12);
+      --blue:           hsl(217, 91%, 60%);
+      --green:          hsl(142, 71%, 45%);
+      --purple:         hsl(262, 80%, 65%);
+      --radius:         0.625rem;
+      --font-mono:      "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+      --font-sans:      "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+
+    /* ── Noise grain overlay ──────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.025;
+    }
+
+    /* ── Utility ───────────────────────────────────────────────── */
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      background: var(--bg-muted);
+      color: var(--amber);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.12em 0.45em;
+    }
+
+    /* ── Navigation ────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      transition: background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.scrolled {
+      background: hsla(240, 10%, 3.9%, 0.8);
+      border-color: var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--amber) 0%, hsl(30, 96%, 53%) 100%);
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: hsl(240, 10%, 4%);
+      letter-spacing: 0;
+      flex-shrink: 0;
+    }
+    .nav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--text); }
+    .nav-gh {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.4rem 0.875rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .nav-gh:hover { border-color: var(--border-hover); background: var(--bg-muted); }
+
+    /* ── Hero ───────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      overflow: hidden;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+    }
+
+    /* Bottom vignette so content below reads cleanly */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% 45%, transparent 25%, hsla(240,10%,3.9%,0.55) 65%, hsla(240,10%,3.9%,0.98) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Amber glow orb */
+    .hero-orb {
+      position: absolute;
+      width: 700px; height: 700px;
+      top: -200px; left: calc(50% - 350px);
+      background: radial-gradient(circle, hsla(47,96%,53%,0.07) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+      animation: orb-pulse 6s ease-in-out infinite;
+    }
+    @keyframes orb-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%       { transform: scale(1.1); opacity: 0.7; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--amber);
+      background: hsla(47, 96%, 53%, 0.08);
+      border: 1px solid hsla(47, 96%, 53%, 0.22);
+      border-radius: 99px;
+      padding: 0.3rem 0.875rem;
+      margin-bottom: 2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    .hero-title {
+      font-size: clamp(2.75rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.03;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title-white {
+      color: var(--text);
+    }
+    .hero-title-amber {
+      background: linear-gradient(110deg, var(--amber) 0%, hsl(30,96%,56%) 50%, hsl(47,96%,53%) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 540px;
+      margin: 0 auto 2.75rem;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.875rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+    .btn-solid {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      background: var(--text);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      border: 1px solid var(--text);
+      letter-spacing: -0.01em;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .btn-solid:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.75rem;
+      background: transparent;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 0.9375rem;
+      border-radius: var(--radius);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      letter-spacing: -0.01em;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--border-hover); background: var(--bg-muted); transform: translateY(-2px); }
+
+    /* Stats row under hero CTAs */
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .hero-stat {
+      text-align: center;
+    }
+    .hero-stat-val {
+      font-size: 1.375rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      margin-top: 0.2rem;
+      letter-spacing: 0.02em;
+    }
+    .hero-stat-sep {
+      width: 1px;
+      height: 2rem;
+      background: var(--border);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--text-subtle);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: scroll-bounce 2.5s ease-in-out infinite;
+    }
+    @keyframes scroll-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+      50%       { transform: translateX(-50%) translateY(7px); opacity: 1; }
+    }
+
+    /* ── Section utilities ──────────────────────────────────────── */
+    .section-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-size: clamp(1.625rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 0.875rem;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .sep {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+    }
+
+    /* ── Libraries section ──────────────────────────────────────── */
+    .s-libraries { padding: 7rem 0; }
+    .s-libraries-header { text-align: center; margin-bottom: 4rem; }
+
+    .lib-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 2px);
+      overflow: hidden;
+    }
+    @media (max-width: 900px) { .lib-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .lib-grid { grid-template-columns: 1fr; } }
+
+    .lib-card {
+      background: var(--bg);
+      padding: 1.875rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      cursor: pointer;
+    }
+    a.lib-card:hover { background: var(--bg-card); }
+
+    /* Mouse-tracking radial glow */
+    a.lib-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      background: radial-gradient(
+        500px circle at var(--mx, 50%) var(--my, 50%),
+        hsla(47, 96%, 53%, 0.045),
+        transparent 40%
+      );
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    a.lib-card:hover::before { opacity: 1; }
+
+    .lib-card-dim {
+      opacity: 0.4;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .lib-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 1.2rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .lib-badge {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      padding: 0.22rem 0.6rem;
+      border-radius: 99px;
+      border: 1px solid;
+      letter-spacing: 0.04em;
+    }
+    .lib-badge-live {
+      color: var(--green);
+      border-color: hsla(142, 71%, 45%, 0.3);
+      background: hsla(142, 71%, 45%, 0.08);
+    }
+    .lib-badge-soon {
+      color: var(--text-subtle);
+      border-color: var(--border);
+    }
+
+    .lib-card h3 {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.5rem;
+    }
+    .lib-card p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+    .lib-pkgs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .lib-pkg {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .lib-pkg::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+    .lib-arrow {
+      position: absolute;
+      bottom: 1.625rem;
+      right: 1.625rem;
+      font-size: 1rem;
+      color: var(--text-subtle);
+      transition: color 0.15s, transform 0.15s;
+    }
+    a.lib-card:hover .lib-arrow {
+      color: var(--text);
+      transform: translate(3px, -3px);
+    }
+
+    /* ── Architecture / Features section ─────────────────────── */
+    .s-features {
+      padding: 7rem 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .features-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .features-inner { grid-template-columns: 1fr; gap: 3rem; } }
+
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .feature-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .feat-icon {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: var(--bg-muted);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 0.8125rem;
+    }
+    .feat-icon-amber { color: var(--amber); }
+    .feat-icon-blue  { color: var(--blue); }
+    .feat-icon-green { color: var(--green); }
+    .feat-icon-purple{ color: var(--purple); }
+
+    .feature-item h4 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.2rem;
+    }
+    .feature-item p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* Architecture SVG panel */
+    .arch-panel {
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.5);
+      overflow: hidden;
+      background: var(--bg-muted);
+      aspect-ratio: 4/3;
+      position: relative;
+    }
+    .arch-panel svg { display: block; width: 100%; height: 100%; }
+
+    /* ── Principles ─────────────────────────────────────────────── */
+    .s-pillars { padding: 7rem 0; }
+    .pillars-hdr { text-align: center; margin-bottom: 4rem; }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) { .pillars-grid { grid-template-columns: 1fr; } }
+
+    .pillar {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      transition: border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .pillar:hover { border-color: var(--border-hover); }
+    .pillar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-hover), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .pillar:hover::after { opacity: 1; }
+
+    .pillar-num {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: var(--border);
+      margin-bottom: 1rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .pillar h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+    .pillar p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── Stats strip ─────────────────────────────────────────────── */
+    .s-stats {
+      padding: 3.5rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+    .stats-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      text-align: center;
+    }
+    @media (max-width: 640px) { .stats-inner { grid-template-columns: repeat(2, 1fr); } }
+    .stat-val {
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── CTA section ─────────────────────────────────────────────── */
+    .s-cta {
+      padding: 8rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-orb {
+      position: absolute;
+      width: 500px; height: 500px;
+      bottom: -200px; left: calc(50% - 250px);
+      background: radial-gradient(circle, hsla(47,96%,53%,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+    .cta-install {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--green);
+      margin: 2rem 0;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-install-prompt { color: var(--text-subtle); user-select: none; }
+    .cta-install::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, hsla(142,71%,45%,0.04), transparent 60%);
+    }
+    .cta-actions {
+      display: flex;
+      gap: 0.875rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+    }
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-brand {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-link {
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-link:hover { color: var(--text-muted); }
+
+    /* ── Scroll-driven reveal ─────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        opacity  0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    /* Progressive enhancement: native CSS scroll-driven animations */
+    @supports (animation-timeline: view()) {
+      .reveal {
+        animation: sd-reveal linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 22%;
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-d1 { animation-delay: calc(0s - 0.1s); animation-range-start: entry 4%; }
+      .reveal-d2 { animation-delay: calc(0s - 0.2s); animation-range-start: entry 8%; }
+      .reveal-d3 { animation-delay: calc(0s - 0.3s); animation-range-start: entry 12%; }
+      @keyframes sd-reveal {
+        from { opacity: 0; transform: translateY(28px); }
+        to   { opacity: 1; transform: none; }
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────────────────── -->
+<nav class="nav" id="site-nav" aria-label="Main navigation">
+  <a class="nav-brand" href="{{ '/' | relative_url }}">
+    <span class="nav-logo">P</span>
+    JmkCoder
+  </a>
+  <div class="nav-right">
+    <a class="nav-link" href="{{ '/authentication/' | relative_url }}">Docs</a>
+    <a class="nav-gh" href="{{ site.github_url }}" target="_blank" rel="noopener noreferrer">
+      <i class="bi bi-github"></i> GitHub
+    </a>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────── -->
+<section class="hero" aria-label="Hero">
+  <div class="hero-orb" aria-hidden="true"></div>
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot" aria-hidden="true"></span>
+      Open Source &nbsp;·&nbsp; .NET 8 &nbsp;·&nbsp; MIT License
+    </div>
+
+    <h1 class="hero-title">
+      <span class="hero-title-white">Focused libraries for</span><br>
+      <span class="hero-title-amber">serious builders</span>
+    </h1>
+
+    <p class="hero-sub">
+      JmkCoder Primitives is a growing collection of production-grade .NET&nbsp;8 packages.
+      Each one does exactly one thing — and does it exceptionally well.
+    </p>
+
+    <div class="hero-actions">
+      <a class="btn-solid" href="{{ '/authentication/' | relative_url }}">
+        Explore Authentication <i class="bi bi-arrow-right"></i>
+      </a>
+      <a class="btn-ghost" href="{{ site.github_url }}" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-github"></i> View on GitHub
+      </a>
+    </div>
+
+    <div class="hero-stats" aria-label="Key metrics">
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:var(--amber);">3</div>
+        <div class="hero-stat-label">NuGet packages</div>
+      </div>
+      <div class="hero-stat-sep" aria-hidden="true"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:var(--blue);">5+</div>
+        <div class="hero-stat-label">Auth strategies</div>
+      </div>
+      <div class="hero-stat-sep" aria-hidden="true"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:var(--green);">.NET 8</div>
+        <div class="hero-stat-label">Target framework</div>
+      </div>
+      <div class="hero-stat-sep" aria-hidden="true"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-val" style="color:var(--text);">MIT</div>
+        <div class="hero-stat-label">Open source</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <i class="bi bi-chevron-compact-down"></i>
+    scroll
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Libraries ─────────────────────────────────────────────── -->
+<section class="s-libraries">
+  <div class="container">
+    <div class="s-libraries-header reveal">
+      <div class="section-label">Libraries</div>
+      <h2 class="section-title">Everything you need.<br>Nothing you don't.</h2>
+      <p class="section-sub" style="max-width:500px;margin:0 auto;">
+        Each package is independently versioned, tree-shakeable, and follows the same composable design contract.
+      </p>
+    </div>
+
+    <div class="lib-grid" role="list">
+
+      <!-- Authentication — LIVE -->
+      <a class="lib-card" href="{{ '/authentication/' | relative_url }}" role="listitem">
+        <div class="lib-icon" style="background:hsla(47,96%,53%,0.08);border-color:hsla(47,96%,53%,0.2);color:var(--amber);">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <span class="lib-badge lib-badge-live">● Live</span>
+        <h3>Primitives.Authentication</h3>
+        <p>Plug-and-play JWT authentication with OIDC, Kerberos, API&nbsp;Key, and Username/Password — across HTTP, gRPC, SignalR, and message queues.</p>
+        <div class="lib-pkgs" aria-label="Packages">
+          <span class="lib-pkg">Primitives.Authentication</span>
+          <span class="lib-pkg">Primitives.Authentication.AspNetCore</span>
+          <span class="lib-pkg">Primitives.Authentication.Client</span>
+        </div>
+        <i class="bi bi-arrow-up-right lib-arrow" aria-hidden="true"></i>
+      </a>
+
+      <!-- Caching -->
+      <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Caching — coming soon">
+        <div class="lib-icon" style="color:var(--text-subtle);">
+          <i class="bi bi-lightning-fill"></i>
+        </div>
+        <span class="lib-badge lib-badge-soon">Coming soon</span>
+        <h3>Primitives.Caching</h3>
+        <p>Unified caching over in-memory, Redis, and distributed providers with automatic invalidation and cache-aside helpers built in.</p>
+        <div class="lib-pkgs">
+          <span class="lib-pkg">Primitives.Caching</span>
+          <span class="lib-pkg">Primitives.Caching.Redis</span>
+        </div>
+      </div>
+
+      <!-- Messaging -->
+      <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Messaging — coming soon">
+        <div class="lib-icon" style="color:var(--text-subtle);">
+          <i class="bi bi-send-fill"></i>
+        </div>
+        <span class="lib-badge lib-badge-soon">Coming soon</span>
+        <h3>Primitives.Messaging</h3>
+        <p>Broker-agnostic message publishing and consumption with retry, dead-letter, and transactional outbox patterns for reliable delivery.</p>
+        <div class="lib-pkgs">
+          <span class="lib-pkg">Primitives.Messaging</span>
+          <span class="lib-pkg">Primitives.Messaging.RabbitMQ</span>
+        </div>
+      </div>
+
+      <!-- Resilience -->
+      <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Resilience — coming soon">
+        <div class="lib-icon" style="color:var(--text-subtle);">
+          <i class="bi bi-shield-fill-check"></i>
+        </div>
+        <span class="lib-badge lib-badge-soon">Coming soon</span>
+        <h3>Primitives.Resilience</h3>
+        <p>Circuit breakers, retry policies, bulkheads, and timeouts built on Polly&nbsp;v8 — pre-wired for .NET DI with zero boilerplate.</p>
+        <div class="lib-pkgs">
+          <span class="lib-pkg">Primitives.Resilience</span>
+        </div>
+      </div>
+
+      <!-- Storage -->
+      <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Storage — coming soon">
+        <div class="lib-icon" style="color:var(--text-subtle);">
+          <i class="bi bi-database-fill"></i>
+        </div>
+        <span class="lib-badge lib-badge-soon">Coming soon</span>
+        <h3>Primitives.Storage</h3>
+        <p>Abstraction over Azure Blob, S3, and local filesystem with streaming, signed URLs, and object lifecycle management.</p>
+        <div class="lib-pkgs">
+          <span class="lib-pkg">Primitives.Storage</span>
+          <span class="lib-pkg">Primitives.Storage.Azure</span>
+        </div>
+      </div>
+
+      <!-- Multitenancy -->
+      <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Multitenancy — coming soon">
+        <div class="lib-icon" style="color:var(--text-subtle);">
+          <i class="bi bi-diagram-3-fill"></i>
+        </div>
+        <span class="lib-badge lib-badge-soon">Coming soon</span>
+        <h3>Primitives.Multitenancy</h3>
+        <p>Tenant resolution, per-tenant configuration, and data-isolation strategies that slot into any existing ASP.NET Core application.</p>
+        <div class="lib-pkgs">
+          <span class="lib-pkg">Primitives.Multitenancy</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Features / Architecture ────────────────────────────────── -->
+<section class="s-features">
+  <div class="container">
+    <div class="features-inner">
+
+      <div class="reveal">
+        <div class="section-label">Design Philosophy</div>
+        <h2 class="section-title">Built the right way,<br>from day one.</h2>
+        <ul class="feature-list">
+          <li class="feature-item">
+            <div class="feat-icon feat-icon-amber"><i class="bi bi-box-seam-fill"></i></div>
+            <div>
+              <h4>DI-First Architecture</h4>
+              <p>One <code>AddPrimitives*()</code> call wires everything into your container. No static singletons, no hidden global state.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feat-icon feat-icon-blue"><i class="bi bi-layers-fill"></i></div>
+            <div>
+              <h4>Layered Packages</h4>
+              <p>Core abstractions ship independently from transport integrations. Reference only what your project actually uses.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feat-icon feat-icon-green"><i class="bi bi-puzzle-fill"></i></div>
+            <div>
+              <h4>Extensible by Design</h4>
+              <p>Every behaviour surface is an interface. Swap, wrap, or extend any part without forking the source code.</p>
+            </div>
+          </li>
+          <li class="feature-item">
+            <div class="feat-icon feat-icon-purple"><i class="bi bi-graph-up-arrow"></i></div>
+            <div>
+              <h4>Observable &amp; Testable</h4>
+              <p>Structured logging, health checks, and in-memory test doubles ship in every core package — never as afterthoughts.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Animated architecture diagram -->
+      <div class="reveal reveal-d2">
+        <div class="arch-panel" aria-label="Package architecture diagram">
+          <svg viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="gAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="hsl(47,96%,53%)" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="hsl(30,96%,54%)" stop-opacity="0.9"/>
+              </linearGradient>
+              <linearGradient id="gBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="hsl(217,91%,60%)" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="hsl(197,91%,58%)" stop-opacity="0.9"/>
+              </linearGradient>
+              <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="hsl(142,71%,45%)" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="hsl(162,71%,45%)" stop-opacity="0.9"/>
+              </linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <!-- Grid pattern -->
+              <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                <path d="M 24 0 L 0 0 0 24" fill="none" stroke="hsl(240,3.7%,13%)" stroke-width="0.6"/>
+              </pattern>
+            </defs>
+
+            <!-- Background -->
+            <rect width="420" height="320" fill="hsl(240,5%,8%)"/>
+            <rect width="420" height="320" fill="url(#grid)"/>
+
+            <!-- Ambient glow blobs -->
+            <ellipse cx="210" cy="60" rx="120" ry="50" fill="hsla(47,96%,53%,0.04)"/>
+            <ellipse cx="80" cy="200" rx="70" ry="40" fill="hsla(217,91%,60%,0.04)"/>
+            <ellipse cx="340" cy="200" rx="70" ry="40" fill="hsla(142,71%,45%,0.04)"/>
+
+            <!-- Animated flowing lines Core→Transports -->
+            <g opacity="0.5">
+              <line x1="210" y1="80" x2="90" y2="170" stroke="url(#gAmber)" stroke-width="1.5" stroke-dasharray="5 4">
+                <animate attributeName="stroke-dashoffset" values="0;-18" dur="1.4s" repeatCount="indefinite"/>
+              </line>
+              <line x1="210" y1="80" x2="210" y2="170" stroke="url(#gBlue)" stroke-width="1.5" stroke-dasharray="5 4">
+                <animate attributeName="stroke-dashoffset" values="0;-18" dur="1.9s" repeatCount="indefinite"/>
+              </line>
+              <line x1="210" y1="80" x2="330" y2="170" stroke="url(#gGreen)" stroke-width="1.5" stroke-dasharray="5 4">
+                <animate attributeName="stroke-dashoffset" values="0;-18" dur="2.2s" repeatCount="indefinite"/>
+              </line>
+
+              <!-- Transport→Integration lines -->
+              <line x1="90" y1="195" x2="90" y2="265" stroke="hsl(240,4%,22%)" stroke-width="1" stroke-dasharray="4 4">
+                <animate attributeName="stroke-dashoffset" values="0;-16" dur="2s" repeatCount="indefinite"/>
+              </line>
+              <line x1="210" y1="195" x2="150" y2="265" stroke="hsl(240,4%,22%)" stroke-width="1" stroke-dasharray="4 4">
+                <animate attributeName="stroke-dashoffset" values="0;-16" dur="2.4s" repeatCount="indefinite"/>
+              </line>
+              <line x1="210" y1="195" x2="270" y2="265" stroke="hsl(240,4%,22%)" stroke-width="1" stroke-dasharray="4 4">
+                <animate attributeName="stroke-dashoffset" values="0;-16" dur="2.6s" repeatCount="indefinite"/>
+              </line>
+              <line x1="330" y1="195" x2="330" y2="265" stroke="hsl(240,4%,22%)" stroke-width="1" stroke-dasharray="4 4">
+                <animate attributeName="stroke-dashoffset" values="0;-16" dur="2.1s" repeatCount="indefinite"/>
+              </line>
+            </g>
+
+            <!-- Core node -->
+            <g transform="translate(210,62)" filter="url(#glow)">
+              <circle r="30" fill="url(#gAmber)" opacity="0.12"/>
+              <circle r="24" fill="hsl(240,8%,6%)" stroke="url(#gAmber)" stroke-width="1.5"/>
+              <text text-anchor="middle" dy="4" font-size="9" fill="hsl(47,96%,53%)"
+                    font-family="'JetBrains Mono',monospace" font-weight="600">Core</text>
+            </g>
+
+            <!-- Transport nodes -->
+            <g transform="translate(90,183)" filter="url(#glow)">
+              <circle r="20" fill="hsl(240,8%,6%)" stroke="url(#gBlue)" stroke-width="1.5"/>
+              <text text-anchor="middle" dy="-3" font-size="7" fill="hsl(217,91%,60%)"
+                    font-family="'JetBrains Mono',monospace">AspNet</text>
+              <text text-anchor="middle" dy="7" font-size="7" fill="hsl(217,91%,60%)"
+                    font-family="'JetBrains Mono',monospace">Core</text>
+            </g>
+            <g transform="translate(210,183)" filter="url(#glow)">
+              <circle r="20" fill="hsl(240,8%,6%)" stroke="url(#gBlue)" stroke-width="1.5"/>
+              <text text-anchor="middle" dy="4" font-size="7" fill="hsl(217,91%,60%)"
+                    font-family="'JetBrains Mono',monospace">Client</text>
+            </g>
+            <g transform="translate(330,183)" filter="url(#glow)">
+              <circle r="20" fill="hsl(240,8%,6%)" stroke="url(#gBlue)" stroke-width="1.5"/>
+              <text text-anchor="middle" dy="4" font-size="7" fill="hsl(217,91%,60%)"
+                    font-family="'JetBrains Mono',monospace">Strategy</text>
+            </g>
+
+            <!-- Integration boxes -->
+            <g transform="translate(90,275)">
+              <rect x="-32" y="-13" width="64" height="26" rx="5"
+                    fill="hsl(240,8%,6%)" stroke="hsl(240,4%,18%)" stroke-width="1"/>
+              <text text-anchor="middle" dy="-1" font-size="6.5" fill="hsl(240,5%,55%)"
+                    font-family="'JetBrains Mono',monospace">HTTP · gRPC</text>
+              <text text-anchor="middle" dy="9" font-size="6.5" fill="hsl(240,5%,55%)"
+                    font-family="'JetBrains Mono',monospace">JWT Bearer</text>
+            </g>
+            <g transform="translate(210,275)">
+              <rect x="-32" y="-13" width="64" height="26" rx="5"
+                    fill="hsl(240,8%,6%)" stroke="hsl(240,4%,18%)" stroke-width="1"/>
+              <text text-anchor="middle" dy="-1" font-size="6.5" fill="hsl(240,5%,55%)"
+                    font-family="'JetBrains Mono',monospace">SignalR</text>
+              <text text-anchor="middle" dy="9" font-size="6.5" fill="hsl(240,5%,55%)"
+                    font-family="'JetBrains Mono',monospace">Message&nbsp;Q</text>
+            </g>
+            <g transform="translate(330,275)">
+              <rect x="-32" y="-13" width="64" height="26" rx="5"
+                    fill="hsl(240,8%,6%)" stroke="hsl(240,4%,18%)" stroke-width="1"/>
+              <text text-anchor="middle" dy="-1" font-size="6.5" fill="hsl(240,5%,55%)"
+                    font-family="'JetBrains Mono',monospace">OIDC · Kerb</text>
+              <text text-anchor="middle" dy="9" font-size="6.5" fill="hsl(240,5%,55%)"
+                    font-family="'JetBrains Mono',monospace">API Key</text>
+            </g>
+
+            <!-- Label -->
+            <text x="210" y="16" text-anchor="middle" font-size="8.5"
+                  fill="hsl(240,4%,40%)" font-family="'Inter',sans-serif" letter-spacing="0.08em"
+                  text-transform="uppercase">PACKAGE ARCHITECTURE</text>
+
+            <!-- Floating particles -->
+            <circle cx="40" cy="40" r="2" fill="hsl(47,96%,53%)" opacity="0.35">
+              <animate attributeName="cy" values="40;30;40" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.35;0.8;0.35" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="380" cy="70" r="1.5" fill="hsl(217,91%,60%)" opacity="0.4">
+              <animate attributeName="cy" values="70;58;70" dur="4.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.4;0.9;0.4" dur="4.2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="370" cy="290" r="2" fill="hsl(142,71%,45%)" opacity="0.3">
+              <animate attributeName="cx" values="370;358;370" dur="5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.3;0.7;0.3" dur="5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="28" cy="280" r="1.5" fill="hsl(47,96%,53%)" opacity="0.3">
+              <animate attributeName="cx" values="28;40;28" dur="3.8s" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── Stats ──────────────────────────────────────────────────── -->
+<section class="s-stats">
+  <div class="container">
+    <div class="stats-inner">
+      <div class="reveal">
+        <div class="stat-val" style="background:linear-gradient(135deg,var(--amber),hsl(30,96%,55%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">3</div>
+        <div class="stat-lbl">Published packages</div>
+      </div>
+      <div class="reveal reveal-d1">
+        <div class="stat-val" style="background:linear-gradient(135deg,var(--blue),hsl(197,91%,60%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">5+</div>
+        <div class="stat-lbl">Auth strategies</div>
+      </div>
+      <div class="reveal reveal-d2">
+        <div class="stat-val" style="background:linear-gradient(135deg,var(--green),hsl(162,71%,45%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">.NET 8</div>
+        <div class="stat-lbl">Target framework</div>
+      </div>
+      <div class="reveal reveal-d3">
+        <div class="stat-val" style="color:var(--text);">MIT</div>
+        <div class="stat-lbl">Open source license</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Principles ─────────────────────────────────────────────── -->
+<section class="s-pillars">
+  <div class="container">
+    <div class="pillars-hdr reveal">
+      <div class="section-label">Principles</div>
+      <h2 class="section-title">The Primitives contract</h2>
+      <p class="section-sub" style="max-width:480px;margin:0 auto;">
+        Every library in this collection is held to the same bar. No exceptions, no shortcuts.
+      </p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar reveal">
+        <div class="pillar-num">01</div>
+        <h3>Single Responsibility</h3>
+        <p>Each library owns exactly one concern. Authentication authenticates. Caching caches. The scope never creeps.</p>
+      </div>
+      <div class="pillar reveal reveal-d1">
+        <div class="pillar-num">02</div>
+        <h3>Interface-Driven</h3>
+        <p>Every behaviour is expressed as an interface. You own the implementation — we provide the wiring and sane defaults.</p>
+      </div>
+      <div class="pillar reveal reveal-d2">
+        <div class="pillar-num">03</div>
+        <h3>Zero Magic</h3>
+        <p>No reflection tricks, no hidden global state. If you can read the code, you can understand what it does. Full stop.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ── CTA ────────────────────────────────────────────────────── -->
+<section class="s-cta">
+  <div class="cta-orb" aria-hidden="true"></div>
+  <div class="cta-inner reveal">
+    <div class="section-label">Get started today</div>
+    <h2 class="section-title">Start with Authentication</h2>
+    <p class="section-sub">
+      The first Primitives library is live, fully documented, and battle-tested. One command away.
+    </p>
+    <div class="cta-install">
+      <span class="cta-install-prompt">$ </span>dotnet add package Primitives.Authentication
+    </div>
+    <div class="cta-actions">
+      <a class="btn-solid" href="{{ '/authentication/' | relative_url }}">
+        Read the docs <i class="bi bi-arrow-right"></i>
+      </a>
+      <a class="btn-ghost" href="{{ site.github_url }}" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-github"></i> Source on GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-brand">
+      <span class="nav-logo" style="width:20px;height:20px;font-size:0.6rem;">P</span>
+      JmkCoder Primitives
+    </span>
+    <div class="footer-links">
+      <a class="footer-link" href="{{ '/authentication/' | relative_url }}">Authentication</a>
+      <a class="footer-link" href="{{ site.github_url }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Nav glass effect ──────────────────────────────────── */
+  const nav = document.getElementById('site-nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ── Constellation canvas ──────────────────────────────── */
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  const PARTICLE_COUNT = 90;
+  const MAX_DIST = 130;
+  let W, H, particles, raf;
+
+  const randomBetween = (a, b) => a + Math.random() * (b - a);
+
+  function makeParticle() {
+    return {
+      x:  randomBetween(0, W),
+      y:  randomBetween(0, H),
+      vx: randomBetween(-0.35, 0.35),
+      vy: randomBetween(-0.35, 0.35),
+      r:  randomBetween(0.6, 1.8),
+    };
+  }
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({ length: PARTICLE_COUNT }, makeParticle);
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MAX_DIST) {
+          const alpha = (1 - dist / MAX_DIST) * 0.28;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `hsla(47,70%,60%,${alpha})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'hsla(47,85%,72%,0.55)';
+      ctx.fill();
+    }
+
+    raf = requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', () => { resize(); }, { passive: true });
+
+  // Pause when tab hidden; resume when visible
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) { cancelAnimationFrame(raf); }
+    else { raf = requestAnimationFrame(tick); }
+  });
+
+  init();
+  tick();
+
+  /* ── Mouse-tracking glow on lib cards ─────────────────── */
+  document.querySelectorAll('a.lib-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      card.style.setProperty('--my', `${e.clientY - r.top}px`);
+    }, { passive: true });
+  });
+
+  /* ── Scroll reveal (IntersectionObserver fallback) ─────── */
+  if (!CSS.supports('animation-timeline', 'view()')) {
+    const els = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => io.observe(el));
+  }
+
+  /* ── Smooth counter animation for stat numbers ─────────── */
+  const statEls = document.querySelectorAll('.hero-stat-val');
+  const counterIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.animation = 'none';
+        const finalText = e.target.textContent.trim();
+        const num = parseFloat(finalText);
+        if (!isNaN(num) && num > 1) {
+          let start = null;
+          const duration = 1200;
+          const step = ts => {
+            if (!start) start = ts;
+            const p = Math.min((ts - start) / duration, 1);
+            const ease = 1 - Math.pow(1 - p, 3);
+            e.target.textContent = Math.round(ease * num) + (finalText.includes('+') ? '+' : '');
+            if (p < 1) requestAnimationFrame(step);
+            else e.target.textContent = finalText;
+          };
+          requestAnimationFrame(step);
+        }
+        counterIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  statEls.forEach(el => counterIO.observe(el));
+
+}());
+</script>
+
+</body>
+</html>
