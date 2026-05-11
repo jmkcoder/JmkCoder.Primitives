@@ -8,4 +8,11 @@
     <Project Path="Authentication/tests/Primitives.Authentication.Tests/Primitives.Authentication.Tests.csproj" />
     <Project Path="Authentication/tests/Primitives.Authentication.Transport.Tests/Primitives.Authentication.Transport.Tests.csproj" />
   </Folder>
+  <Folder Name="/Caching/src/">
+    <Project Path="Caching/src/Primitives.Caching/Primitives.Caching.csproj" />
+    <Project Path="Caching/src/Primitives.Caching.Redis/Primitives.Caching.Redis.csproj" />
+  </Folder>
+  <Folder Name="/Caching/tests/">
+    <Project Path="Caching/tests/Primitives.Caching.Tests/Primitives.Caching.Tests.csproj" />
+  </Folder>
 </Solution>

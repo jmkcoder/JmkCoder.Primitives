@@ -38,6 +38,11 @@ libraries:
     icon: bi-shield-lock-fill
     description: Plug-and-play JWT authentication for every layer of your .NET 8 stack.
 
+  - title: Caching
+    url: /caching/
+    icon: bi-lightning-fill
+    description: Unified caching over in-memory, Redis, and distributed providers with automatic invalidation.
+
 # ── Per-library sidebar navigation ───────────────────────────────────────────
 navigation:
   authentication:
@@ -105,3 +110,28 @@ navigation:
           url: /authentication/architecture/
         - title: Configuration Reference
           url: /authentication/reference/
+
+  caching:
+    - title: Getting Started
+      items:
+        - title: Introduction
+          url: /caching/
+        - title: Installation
+          url: /caching/getting-started/
+
+    - title: Core Concepts
+      items:
+        - title: Cache-aside Pattern
+          url: /caching/cache-aside/
+        - title: Tag-based Invalidation
+          url: /caching/invalidation/
+
+    - title: Providers
+      items:
+        - title: Redis Provider
+          url: /caching/redis/
+
+    - title: Reference
+      items:
+        - title: Configuration Reference
+          url: /caching/reference/
