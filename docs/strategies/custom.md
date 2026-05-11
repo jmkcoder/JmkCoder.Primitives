@@ -7,7 +7,7 @@ permalink: /strategies/custom/
 
 ## Overview
 
-If the four built-in strategies don't cover your use case, create one. You need **two files** — an options class and the strategy implementation — and a single DI registration call.
+The four built-in strategies cover the most common credential mechanisms. But authentication is a\nspace where one size never fits all. Some scenarios that require a custom strategy:\n\n- **Smart card / PIV card** \u2014 the credential is a certificate on a hardware token, verified by\n  PKCS#11 or the Windows CryptoAPI.\n- **Certificate-based (mTLS)** \u2014 the client presents a TLS client certificate, and your strategy\n  validates its thumbprint or subject against an allowlist.\n- **One-Time Password (OTP)** \u2014 the credential includes a TOTP code alongside a username.\n- **SAML assertion** \u2014 the identity provider sends an XML assertion rather than an OAuth token.\n- **LDAP** \u2014 you need to bind against an on-premises Active Directory or OpenLDAP directory.\n- **Biometric** \u2014 the credential is a biometric hash verified by a local hardware reader.\n\nIn every case you need **two files** \u2014 an options class and the strategy implementation \u2014 and a\nsingle DI registration call. Everything else (JWT issuance, caching, health checks, refresh token\nrotation) works automatically without any additional code in your strategy.
 
 ---
 

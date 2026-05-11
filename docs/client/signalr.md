@@ -5,6 +5,24 @@ description: WithPrimitivesAuthentication injects a fresh JWT into every SignalR
 permalink: /client/signalr/
 ---
 
+## How SignalR client authentication works
+
+SignalR’s `HubConnectionBuilder` supports an `accessTokenProvider` option — a `Func<Task<string?>>`
+that the client calls to get a token before establishing a connection. This function is also called
+on every automatic reconnect, ensuring that an expired token from the original connection doesn’t
+block reconnection.
+
+`WithPrimitivesAuthentication` wraps `ITokenIssuanceService.AuthenticateAsync()` as the
+`accessTokenProvider`, so every connection and reconnection gets a fresh (or recently cached) token
+without any manual code.
+
+**What about token expiry mid-session?** The `accessTokenProvider` is called at connection time, not
+before every message. If the token expires during a long session, the server-side `AuthenticationHubFilter`
+will reject the next hub method call. The connection will close, triggering a reconnect, which will
+call `accessTokenProvider` again to get a fresh token. This is the expected and designed behaviour.
+
+---
+
 ## Overview
 
 `SignalRHubConnectionExtensions` provides two ways to attach authentication:

@@ -5,13 +5,9 @@ description: The AspNetCore package adds REST token endpoints, JWT Bearer valida
 permalink: /server/
 ---
 
-## Package
+## What is server-side authentication?
 
-```bash
-dotnet add package Primitives.Authentication.AspNetCore
-```
-
-The AspNetCore package depends on `Primitives.Authentication` — you only need to reference the AspNetCore package; the core package is pulled in automatically.
+The `Primitives.Authentication.AspNetCore` package adds the **inbound** half of the authentication\nstory to your ASP.NET Core application. Once you can _issue_ JWTs (covered in\n[Getting Started]({{ '/getting-started/' | relative_url }})), you need to _validate_ them when\nclients send them back. This package provides:\n\n- **`POST /token` REST endpoints** \u2014 HTTP clients (browsers, mobile apps, other services) can\n  exchange credentials for tokens without you writing any controller code.\n- **JWT Bearer validation** \u2014 the standard `[Authorize]` attribute and `RequireAuthorization()`\n  extension method verify incoming JWT signatures using the same key that issued them.\n- **gRPC server interceptor** \u2014 validates the `Authorization` metadata on every inbound gRPC call.\n- **SignalR hub filter** \u2014 validates tokens at WebSocket connection time and on every hub method\n  invocation.\n- **Message queue middleware** \u2014 a broker-agnostic abstraction for validating tokens on inbound\n  messages.\n\nNone of these require extra code in your controllers or hub methods \u2014 they integrate at the\nmiddleware/interceptor layer.\n\n
 
 ---
 

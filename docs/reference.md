@@ -5,9 +5,18 @@ description: Complete options reference for all three packages — JwtOptions, s
 permalink: /reference/
 ---
 
+This page is a complete reference for every options class in all three packages. Use the page
+search (`Ctrl+F`) to jump directly to the property you need. Each section begins with a brief note
+on which builder method populates that options class.
+
+---
+
 ## `JwtOptions`
 
-Configured via `.AddJwtTokenIssuance(o => { … })`.
+Configured via `.AddJwtTokenIssuance(o => { … })`. These values control both the tokens that are
+**issued** (signed with `SigningKey`) and the tokens that are **validated** inbound (if you also
+call `AddPrimitivesJwtBearer()`). The `Issuer`, `Audience`, and `SigningKey` must be identical in
+both calls.
 
 | Property | Type | Required | Default | Notes |
 |---|---|---|---|---|
@@ -21,7 +30,8 @@ Configured via `.AddJwtTokenIssuance(o => { … })`.
 
 ## `OidcAuthenticationOptions`
 
-Configured via `.AddOidc(o => { … })` or `.AddOidc("name", o => { … })`.
+Configured via `.AddOidc(o => { … })` or `.AddOidc("name", o => { … })`. See the
+[OIDC strategy page]({{ '/strategies/oidc/' | relative_url }}) for a conceptual overview.
 
 | Property | Type | Required | Default | Notes |
 |---|---|---|---|---|

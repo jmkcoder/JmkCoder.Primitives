@@ -5,6 +5,28 @@ description: AuthenticationHubFilter validates JWT tokens on connection and befo
 permalink: /server/signalr/
 ---
 
+## Why SignalR authentication is different
+
+SignalR uses persistent connections — WebSockets in most cases, with long-polling as a fallback.
+This creates authentication challenges that don't exist in regular HTTP:
+
+**Browsers cannot set headers on WebSocket connections.** The `Authorization: Bearer <token>` header
+that works perfectly for `fetch()` calls is not available during the WebSocket handshake. The
+browser WebSocket API does not expose a way to set custom headers. This means the token must be
+transmitted some other way — the accepted workaround is to include it as a URL query parameter
+(`?access_token=...`). The server reads it from the URL rather than the header.
+
+**Sessions outlive tokens.** A client connects once and holds the connection open for minutes or
+hours. An access token issued at connection time might expire while the session is still active.
+A guard at connection time alone is not sufficient — the token must also be validated before each
+hub method call.
+
+`AuthenticationHubFilter` handles both concerns: it validates at connection and re-validates before
+every method invocation, accepting the token from either the `Authorization` header (for .NET
+clients) or the `?access_token=` query string (for browser clients).
+
+---
+
 ## Overview
 
 `AuthenticationHubFilter` implements `IHubFilter` and guards SignalR hubs at two points:

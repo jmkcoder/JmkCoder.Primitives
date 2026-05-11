@@ -5,6 +5,25 @@ description: AuthenticationServerInterceptor validates Bearer tokens on every in
 permalink: /server/grpc/
 ---
 
+## gRPC metadata vs HTTP headers
+
+gRPC is based on HTTP/2, but it doesn’t use the familiar HTTP `Authorization` header in the way
+you might expect. Instead, it uses **metadata** — key-value pairs attached to each call in the
+HTTP/2 HEADERS frame. The field is still named `authorization` (lowercase), but the mechanism
+for reading and writing it is gRPC-specific.
+
+On the server side, metadata is accessed via `ServerCallContext.RequestHeaders`. On the client
+side, it is attached via `CallOptions.Headers` or through `CallCredentials`. This is why gRPC
+authentication requires dedicated handling that is separate from the `UseAuthentication()` ASP.NET
+Core middleware — the middleware reads `HttpContext.Request.Headers`, which is a different
+abstraction.
+
+`AuthenticationServerInterceptor` bridges the gap: it runs in the gRPC interceptor pipeline
+(which runs before your service method), reads the metadata, validates the JWT, and populates
+`ServerCallContext` so your service methods can access the authenticated `ClaimsPrincipal`.
+
+---
+
 ## Overview
 
 `AuthenticationServerInterceptor` is a `Grpc.Core.Interceptors.Interceptor` subclass that:

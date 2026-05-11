@@ -5,6 +5,33 @@ description: Use AddPrimitivesJwtBearer to protect controllers and minimal API r
 permalink: /server/jwt-bearer/
 ---
 
+## What is JWT Bearer validation?
+
+When your API receives a request with `Authorization: Bearer <token>`, it needs to answer three
+questions before serving the response:
+
+1. **Is this token genuine?** — did _this_ server sign it, or did someone forge it?
+2. **Has it expired?** — tokens are time-limited; an old token should not grant access.
+3. **Is it for this API?** — a token issued to service A should not be accepted by service B.
+
+JWT validation answers all three locally — **no network call** to the issuer or identity provider
+is needed. The signature is verified cryptographically using the shared signing key. The `exp`,
+`iss`, and `aud` claims are checked against the expected values. The entire validation happens in
+microseconds, in memory.
+
+This is in contrast to _opaque tokens_ (used by OAuth 2.0 introspection), where the server must
+call the identity provider on every request to check whether the token is still valid. JWTs
+trade revocation flexibility for speed and independence.
+
+**Issuance vs validation:**
+- `AddJwtTokenIssuance()` is about creating tokens — outbound.
+- `AddPrimitivesJwtBearer()` is about accepting tokens — inbound.
+
+If your service both _issues_ tokens (is an auth server) and _validates_ them (is an API server),
+you need both.
+
+---
+
 ## Overview
 
 `AddPrimitivesJwtBearer` is a thin wrapper around `AddJwtBearer` that pre-configures:

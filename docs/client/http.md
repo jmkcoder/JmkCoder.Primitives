@@ -5,6 +5,22 @@ description: AuthenticatingHandler is a DelegatingHandler that acquires tokens, 
 permalink: /client/http/
 ---
 
+## Why use AuthenticatingHandler?
+
+Without `AuthenticatingHandler`, every place in your code that calls a protected API needs to:
+
+1. Call `ITokenIssuanceService.AuthenticateAsync()` to get a token
+2. Check whether the token is still valid (or just cached and about to expire)
+3. Set `Authorization: Bearer <token>` on the `HttpRequestMessage`
+4. Handle `401 Unauthorized` responses by refreshing the token and retrying
+5. Coordinate concurrent refresh attempts so the token endpoint isn’t hammered in parallel
+
+`AuthenticatingHandler` does all five automatically. It slots into the `HttpClient` pipeline as a
+`DelegatingHandler`, so from the perspective of any code that injects an `HttpClient`, the token
+management is completely invisible. You write code that calls APIs; the handler handles auth.
+
+---
+
 ## How it works
 
 `AuthenticatingHandler` wraps any `HttpClient` and:
@@ -13,6 +29,8 @@ permalink: /client/http/
 2. **On a `401 Unauthorized` response** — tries to refresh the token (if a refresh token is cached), then retries the request once
 3. **Refresh fallback** — if refresh fails, falls back to full re-authentication and retries
 4. **Streaming bodies** — if the request body is a `StreamContent` (not bufferable), the 401 is returned as-is without retry
+
+**Thundering herd prevention:** When many requests fire simultaneously and the token has just expired, only one of them will attempt a refresh. The others wait (via `SemaphoreSlim`) and receive the same new token once it is available. This prevents flooding the token endpoint with redundant refresh calls.
 
 ---
 

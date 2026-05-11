@@ -5,6 +5,26 @@ description: Token results and refresh tokens are cached to avoid unnecessary ro
 permalink: /caching/
 ---
 
+## Why token caching matters
+
+Every time `ITokenIssuanceService.AuthenticateAsync()` is called, the underlying strategy could
+make a network round-trip to an identity provider (OIDC), perform a database lookup, or execute
+some other potentially slow operation. Without caching, a busy service that authenticates on every
+request would add that latency to every operation — and risk hitting rate limits imposed by
+the identity provider.
+
+Token caching solves this by storing the `AuthenticationResult` after the first successful
+authentication and returning the cached result on subsequent calls until the token is about to
+expire. The identity provider is only called once per token lifetime rather than once per request.
+
+**The `EarlyExpiryBuffer` concept.** Suppose an access token expires at `15:00:00` and your cache
+stores it until exactly that moment. A request that hits the cache at `14:59:55` gets the token,
+but by the time the token reaches the downstream API (a few milliseconds later), it might be
+considered expired due to clock skew. `EarlyExpiryBuffer` (default 30 seconds) causes the cache
+to evict the result at `14:59:30` instead, ensuring there is always a safety margin.
+
+---
+
 ## Overview
 
 Two independent caches exist:

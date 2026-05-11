@@ -5,6 +5,27 @@ description: Expose POST /token, /token/refresh, and /token/revoke from any ASP.
 permalink: /server/token-endpoints/
 ---
 
+## What is a token endpoint?
+
+A _token endpoint_ is an HTTP route that accepts credentials and returns a signed token. The term
+comes from [OAuth 2.0 (RFC 6749 §3.2)](https://datatracker.ietf.org/doc/html/rfc6749#section-3.2),
+which defines a standard interface for this exchange.
+
+Without `MapPrimitivesTokenEndpoints()`, your service can only issue tokens programmatically
+(via `ITokenIssuanceService`). That is fine for service-to-service calls where the caller injects
+the service and calls it directly. But when your clients are external — a browser SPA, a mobile
+app, or a CLI tool written in Python — they need an HTTP API to authenticate against.
+
+`MapPrimitivesTokenEndpoints()` gives you the full lifecycle over HTTP in a single call:
+
+```
+curl POST /token        →  receive accessToken + refreshToken
+curl POST /token/refresh →  exchange refreshToken for a new pair (old one revoked)
+curl POST /token/revoke  →  invalidate a refresh token immediately (logout)
+```
+
+
+
 ## Registration
 
 ```csharp
@@ -13,7 +34,28 @@ app.MapPrimitivesTokenEndpoints();            // mounts at /token (default)
 app.MapPrimitivesTokenEndpoints("/auth");     // or a custom prefix
 ```
 
-All three endpoints call `.AllowAnonymous()` — the credential check happens inside the strategy itself, not at the HTTP middleware layer.
+All three endpoints call `.AllowAnonymous()` — the credential check happens inside the strategy
+itself, not at the HTTP middleware layer. This is intentional: requiring `[Authorize]` on a login
+endpoint creates a circular dependency (you need a token to get a token).
+
+<div class="bd-callout bd-callout-warning">
+<strong>Apply rate limiting in production.</strong> Without rate limiting, <code>POST /token</code>
+can be used for credential-stuffing attacks — automated tools that try thousands of
+username/password combinations per second. Use <code>builder.Services.AddRateLimiter()</code>
+with a fixed-window or sliding-window policy:
+<pre><code class="language-csharp">builder.Services.AddRateLimiter(o =&gt;
+    o.AddFixedWindowLimiter("token", p =&gt;
+    {
+        p.Window          = TimeSpan.FromMinutes(1);
+        p.PermitLimit     = 10;
+        p.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    }));
+
+// Apply to the token endpoint
+app.MapPrimitivesTokenEndpoints()
+   .RequireRateLimiting("token");
+</code></pre>
+</div>
 
 ---
 

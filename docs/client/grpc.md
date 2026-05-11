@@ -5,6 +5,27 @@ description: PrimitivesGrpcCredentials and AuthenticatingClientInterceptor injec
 permalink: /client/grpc/
 ---
 
+## gRPC client credentials vs HTTP headers
+
+When you make an HTTP call, setting an `Authorization` header is trivial — it’s just a header.
+gRPC has two different mechanisms, and which one you use depends on the channel security:
+
+**`CallCredentials`** — the gRPC-native approach. Credentials are provided as a delegate that
+attaches metadata before each call. This is the correct approach for production TLS channels.
+However, gRPC enforces that `CallCredentials` can only be used with encrypted channels (TLS).
+Attempting to use them on a plaintext (`http://`) channel throws a `InvalidOperationException`.
+
+**Interceptor** — an alternative that works with plaintext channels. The interceptor pattern
+applies metadata in the same way as `AuthenticatingHandler` does for HTTP — it runs before
+every outbound call and injects the token. Use this in development environments, service-mesh
+scenarios where TLS is terminated at the sidecar, or any time you cannot use `CallCredentials`.
+
+`PrimitivesGrpcCredentials` provides both:
+- `.Create(…)` — for TLS channels (production)
+- `.CreateInterceptor(…)` — for insecure channels (development)
+
+---
+
 ## Overview
 
 Two options depending on the channel security:
