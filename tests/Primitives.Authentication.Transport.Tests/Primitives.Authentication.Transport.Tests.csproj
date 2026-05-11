@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <!-- ASP.NET Core types (HubCallerContext, ServerCallContext, etc.) -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector"                       Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging"             Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Version="8.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk"                   Version="17.8.0" />
+    <PackageReference Include="NSubstitute"                               Version="5.1.0" />
+    <PackageReference Include="xunit"                                     Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio"                 Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Primitives.Authentication\Primitives.Authentication.csproj" />
+    <ProjectReference Include="..\..\src\Primitives.Authentication.Client\Primitives.Authentication.Client.csproj" />
+    <ProjectReference Include="..\..\src\Primitives.Authentication.AspNetCore\Primitives.Authentication.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

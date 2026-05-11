@@ -1,0 +1,12 @@
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\Primitives.Authentication.csproj.AssemblyReference.cache
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\Primitives.Authentication.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\Primitives.Authentication.AssemblyInfoInputs.cache
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\Primitives.Authentication.AssemblyInfo.cs
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\Primitives.Authentication.csproj.CoreCompileInputs.cache
+D:\Projects\Primitives\src\Primitives.Authentication\bin\Release\net8.0\Primitives.Authentication.deps.json
+D:\Projects\Primitives\src\Primitives.Authentication\bin\Release\net8.0\Primitives.Authentication.dll
+D:\Projects\Primitives\src\Primitives.Authentication\bin\Release\net8.0\Primitives.Authentication.pdb
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\Primitives.Authentication.dll
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\refint\Primitives.Authentication.dll
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\Primitives.Authentication.pdb
+D:\Projects\Primitives\src\Primitives.Authentication\obj\Release\net8.0\ref\Primitives.Authentication.dll

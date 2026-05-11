@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+
+    <PackageId>Primitives.Authentication.Client</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>your-org</Authors>
+    <Description>Client-side token provisioning for Primitives.Authentication — attaches JWTs to outgoing REST (HttpClient), gRPC, SignalR, and message-queue requests.</Description>
+    <PackageTags>authentication;jwt;httpclient;grpc;signalr;messagequeue</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/your-org/Primitives</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/your-org/Primitives.git</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- DelegatingHandler / IHttpClientBuilder extensions -->
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <!-- gRPC client interceptor + CallCredentials -->
+    <PackageReference Include="Grpc.Net.Client" Version="2.65.0" />
+    <!-- SignalR client connection builder extensions -->
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.7" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Primitives.Authentication\Primitives.Authentication.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+
+    <PackageId>Primitives.Authentication.AspNetCore</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>your-org</Authors>
+    <Description>ASP.NET Core server-side JWT validation for Primitives.Authentication — JWT Bearer middleware, gRPC server interceptor, SignalR hub filter, and message-queue authentication base.</Description>
+    <PackageTags>authentication;jwt;aspnetcore;grpc;signalr;middleware</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/your-org/Primitives</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/your-org/Primitives.git</RepositoryUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- ASP.NET Core shared framework: JwtBearer, SignalR, IApplicationBuilder, etc. -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <!-- gRPC Interceptor base class (not part of the ASP.NET Core shared framework) -->
+  <ItemGroup>
+    <PackageReference Include="Grpc.Core.Api" Version="2.65.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Primitives.Authentication\Primitives.Authentication.csproj" />
+  </ItemGroup>
+
+</Project>

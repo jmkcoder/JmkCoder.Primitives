@@ -1,0 +1,15 @@
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitives.Authentication.AspNetCore.csproj.AssemblyReference.cache
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitives.Authentication.AspNetCore.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitives.Authentication.AspNetCore.AssemblyInfoInputs.cache
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitives.Authentication.AspNetCore.AssemblyInfo.cs
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitives.Authentication.AspNetCore.csproj.CoreCompileInputs.cache
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\bin\Release\net8.0\Primitives.Authentication.AspNetCore.deps.json
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\bin\Release\net8.0\Primitives.Authentication.AspNetCore.dll
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\bin\Release\net8.0\Primitives.Authentication.AspNetCore.pdb
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\bin\Release\net8.0\Primitives.Authentication.dll
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\bin\Release\net8.0\Primitives.Authentication.pdb
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitiv.416B9E88.Up2Date
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitives.Authentication.AspNetCore.dll
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\refint\Primitives.Authentication.AspNetCore.dll
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\Primitives.Authentication.AspNetCore.pdb
+D:\Projects\Primitives\src\Primitives.Authentication.AspNetCore\obj\Release\net8.0\ref\Primitives.Authentication.AspNetCore.dll
