@@ -32,14 +32,19 @@ Two independent caches exist:
 
 | Cache | Interface | What it stores | Default |
 |---|---|---|---|
-| Auth result cache | `IAuthenticationResultCache` | `AuthenticationResult` per strategy name | In-memory (`IMemoryCache`) |
+| Auth result cache | `IAuthenticationResultCache` | `AuthenticationResult` per strategy name | In-memory via `Primitives.Caching` (`ICacheService`) |
 | Refresh token store | `IRefreshTokenStore` | `RefreshTokenEntry` records | In-memory (thread-safe dictionary) |
 
-Both are automatically registered by `AddJwtTokenIssuance()`. To replace them with distributed implementations, call the relevant builder methods after `AddJwtTokenIssuance`.
+Both are automatically registered by `AddJwtTokenIssuance()`. The auth result cache is backed by
+[`Primitives.Caching`]({{ '/caching/' | relative_url }}) (`ICacheService`), so the same provider
+you configure for application-level caching is reused automatically.
 
 ---
 
 ## In-memory (default)
+
+`AddResultCache()` registers the in-memory `Primitives.Caching` backend. No separate caching
+package is required:
 
 ```csharp
 builder.Services
@@ -52,24 +57,57 @@ builder.Services
     });
 ```
 
-`EarlyExpiryBuffer`: cached results are evicted this long before the token's stated expiry to avoid serving tokens that are about to expire to downstream callers.
+`EarlyExpiryBuffer`: cached results are evicted this long before the token's stated expiry to avoid
+serving tokens that are about to expire to downstream callers.
 
-The default in-memory implementation is suitable for:
+The in-memory backend is suitable for:
 - Single-instance applications
 - Development and testing
 - Worker services with a single process
 
 ---
 
-## Distributed cache (Redis, SQL Server, …)
+## Redis backend
 
-For multi-instance deployments (Kubernetes, Azure App Service, etc.), replace both stores with `IDistributedCache`-backed implementations:
+Add `Primitives.Caching.Redis` and register it **before** the authentication builder. The auth
+result cache will automatically use the Redis `ICacheService` — no separate auth wiring required:
+
+```csharp
+// 1. Register Primitives.Caching.Redis (covers both app caching and auth result caching)
+builder.Services.AddPrimitivesCacheRedis(
+    configureRedis: o =>
+    {
+        o.Configuration          = config.GetConnectionString("Redis");
+        o.UsePubSubInvalidation  = true;
+    },
+    configureCache: o =>
+    {
+        o.KeyPrefix = "myapp";
+    });
+
+// 2. Wire authentication as normal — it reuses the Redis ICacheService
+builder.Services
+    .AddAuthentication()
+    .AddOidc(o => { … })
+    .AddJwtTokenIssuance(o => { … })
+    .AddResultCache(o => { o.EarlyExpiryBuffer = TimeSpan.FromSeconds(30); })
+    .AddDistributedRefreshTokenStore();  // still uses IDistributedCache for refresh tokens
+```
+
+---
+
+## Distributed cache (SQL Server, NCache, …)
+
+For non-Redis distributed deployments use `AddDistributedResultCache()`, which switches the
+auth result cache to the `IDistributedCache`-backed `Primitives.Caching` provider:
 
 ```csharp
 // 1. Register any IDistributedCache provider
-builder.Services.AddStackExchangeRedisCache(o =>
+builder.Services.AddDistributedSqlServerCache(o =>
 {
-    o.Configuration = config.GetConnectionString("Redis");
+    o.ConnectionString = config.GetConnectionString("CacheDb");
+    o.SchemaName       = "dbo";
+    o.TableName        = "AppCache";
 });
 
 // 2. Replace the default in-memory implementations
@@ -77,11 +115,9 @@ builder.Services
     .AddAuthentication()
     .AddOidc(o => { … })
     .AddJwtTokenIssuance(o => { … })
-    .AddDistributedResultCache()         // replaces IAuthenticationResultCache
-    .AddDistributedRefreshTokenStore();  // replaces IRefreshTokenStore
+    .AddDistributedResultCache()         // switches auth result cache to IDistributedCache
+    .AddDistributedRefreshTokenStore();  // switches refresh token store to IDistributedCache
 ```
-
-Both methods use `services.Replace(…)` so they override the defaults registered by `AddJwtTokenIssuance()` without needing to remove them first.
 
 ---
 
@@ -120,16 +156,34 @@ or use sticky sessions to ensure a token chain always resolves on the same node.
 
 ## Custom implementation
 
-Implement either interface to provide a completely custom backing store:
+You can replace the backing store at two levels:
+
+**Option A — custom `ICacheService` provider (recommended)**
+
+Implement a custom `ICacheService` and register it before the auth builder. Because the auth
+result cache resolves its storage through `ICacheService`, your custom provider is picked up
+automatically with no auth-specific code:
 
 ```csharp
-public sealed class RedisAuthResultCache : IAuthenticationResultCache
+services.AddSingleton<ICacheService, MyCustomCacheService>();
+
+services
+    .AddAuthentication()
+    .AddResultCache();   // uses MyCustomCacheService
+```
+
+**Option B — custom `IAuthenticationResultCache`**
+
+If you need auth-specific cache logic (e.g. a different key scheme or serialisation), implement
+the interface directly and replace the registration:
+
+```csharp
+public sealed class MyAuthResultCache : IAuthenticationResultCache
 {
     public Task<AuthenticationResult?> GetAsync(string key, CancellationToken ct) { … }
     public Task SetAsync(string key, AuthenticationResult result, CancellationToken ct) { … }
     public Task RemoveAsync(string key, CancellationToken ct) { … }
 }
 
-// Register it as a singleton, replacing the default
-services.Replace(ServiceDescriptor.Singleton<IAuthenticationResultCache, RedisAuthResultCache>());
+services.Replace(ServiceDescriptor.Singleton<IAuthenticationResultCache, MyAuthResultCache>());
 ```
