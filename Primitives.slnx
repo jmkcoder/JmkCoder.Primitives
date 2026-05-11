@@ -35,4 +35,10 @@
   <Folder Name="/Storage/tests/">
     <Project Path="Storage/tests/Primitives.Storage.Tests/Primitives.Storage.Tests.csproj" />
   </Folder>
+  <Folder Name="/Multitenancy/src/">
+    <Project Path="Multitenancy/src/Primitives.Multitenancy/Primitives.Multitenancy.csproj" />
+  </Folder>
+  <Folder Name="/Multitenancy/tests/">
+    <Project Path="Multitenancy/tests/Primitives.Multitenancy.Tests/Primitives.Multitenancy.Tests.csproj" />
+  </Folder>
 </Solution>

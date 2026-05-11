@@ -58,6 +58,11 @@ libraries:
     icon: bi-database-fill
     description: Abstraction over Azure Blob, S3, and local filesystem with streaming, signed URLs, and object lifecycle management.
 
+  - title: Multitenancy
+    url: /multitenancy/
+    icon: bi-diagram-3-fill
+    description: Tenant resolution, per-tenant configuration, and data-isolation strategies that slot into any existing ASP.NET Core application.
+
 # ── Per-library sidebar navigation ───────────────────────────────────────────
 navigation:
   authentication:
@@ -217,3 +222,23 @@ navigation:
       items:
         - title: Configuration Reference
           url: /storage/reference/
+
+  multitenancy:
+    - title: Getting Started
+      items:
+        - title: Introduction
+          url: /multitenancy/
+        - title: Installation
+          url: /multitenancy/getting-started/
+
+    - title: Core Concepts
+      items:
+        - title: Resolvers
+          url: /multitenancy/resolvers/
+        - title: Data Isolation
+          url: /multitenancy/data-isolation/
+
+    - title: Reference
+      items:
+        - title: Configuration Reference
+          url: /multitenancy/reference/
