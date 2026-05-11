@@ -139,5 +139,16 @@
 </div><!-- /.bd-layout -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+  // Wrap every table in a scrollable div so long rows scroll horizontally
+  document.querySelectorAll('.bd-content table').forEach(function(t) {
+    if (!t.parentElement.classList.contains('table-wrapper')) {
+      var w = document.createElement('div');
+      w.className = 'table-wrapper';
+      t.parentNode.insertBefore(w, t);
+      w.appendChild(t);
+    }
+  });
+</script>
 </body>
 </html>

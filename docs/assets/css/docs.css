@@ -187,7 +187,8 @@ body {
   border-radius: .25rem;
   padding: .15em .4em;
   font-size: .875em;
-  word-break: break-word;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 /* ── Code blocks (Rouge) ────────────────────────────────────── */
@@ -240,14 +241,18 @@ body {
 .highlight .err                 { color: #f85149; background: none; }
 
 /* ── Tables ─────────────────────────────────────────────────── */
+.bd-content .table-wrapper {
+  display: block;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 1.5rem 0;
+}
+
 .bd-content table {
   width: 100%;
   font-size: .875rem;
   border-collapse: collapse;
-  margin: 1.5rem 0;
-  display: block;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  margin: 0;
 }
 
 .bd-content table th {
@@ -263,6 +268,13 @@ body {
   padding: .6rem 1rem;
   border: 1px solid #dee2e6;
   vertical-align: top;
+}
+
+/* Prevent inline code inside table cells from wrapping mid-word */
+.bd-content table td code,
+.bd-content table th code {
+  white-space: nowrap;
+  word-break: normal;
 }
 
 .bd-content table tr:nth-child(even) td {
