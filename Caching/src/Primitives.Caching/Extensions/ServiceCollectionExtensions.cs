@@ -2,6 +2,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Primitives.Caching.Abstractions;
 using Primitives.Caching.Providers;
 
@@ -19,6 +20,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         Action<CacheOptions>? configure = null)
     {
+        services.AddLogging();
         services.AddMemoryCache();
         services.Configure<CacheOptions>(configure ?? (_ => { }));
         services.TryAddSingleton<ICacheService, MemoryCacheService>();
@@ -36,6 +38,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         Action<CacheOptions>? configure = null)
     {
+        services.AddLogging();
         services.Configure<CacheOptions>(configure ?? (_ => { }));
         services.TryAddSingleton<ICacheService, DistributedCacheService>();
         return services;

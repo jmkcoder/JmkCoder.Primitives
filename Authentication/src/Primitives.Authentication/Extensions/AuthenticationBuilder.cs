@@ -1,5 +1,5 @@
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Primitives.Caching.Extensions;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
@@ -172,36 +172,40 @@ public sealed class AuthenticationBuilder
         return this;
     }
 
-    // -- Result cache (in-memory) -------------------------------------------
+    // -- Result cache -------------------------------------------------------
 
     /// <summary>
-    /// Enables in-process caching of successful authentication results to avoid
-    /// redundant strategy calls for the same identity within a token's lifetime.
+    /// Enables in-process caching of successful authentication results using
+    /// <c>Primitives.Caching</c> (<see cref="Primitives.Caching.Abstractions.ICacheService"/>).
+    /// Uses the in-memory backend by default. Call <see cref="AddDistributedResultCache"/> or
+    /// configure the Redis provider separately to switch to a distributed backend.
     /// </summary>
     public AuthenticationBuilder AddResultCache(Action<AuthenticationCacheOptions>? configure = null)
     {
-        Services.AddMemoryCache();
         Services.AddOptions<AuthenticationCacheOptions>();
         if (configure is not null)
             Services.Configure(configure);
 
-        Services.TryAddSingleton<IAuthenticationResultCache, InMemoryAuthenticationResultCache>();
+        // Register the in-memory Primitives.Caching backend (no-op if already registered)
+        Services.AddPrimitivesCache();
+        Services.TryAddSingleton<IAuthenticationResultCache, PrimitivesAuthenticationResultCache>();
         return this;
     }
 
-    // -- Result cache (distributed) -----------------------------------------
-
     /// <summary>
     /// Enables distributed caching of successful authentication results using
-    /// <see cref="Microsoft.Extensions.Caching.Distributed.IDistributedCache"/>.
+    /// <c>Primitives.Caching</c> (<see cref="Primitives.Caching.Abstractions.ICacheService"/>)
+    /// over an already-registered <see cref="Microsoft.Extensions.Caching.Distributed.IDistributedCache"/>.
     /// Replaces any previously registered <see cref="IAuthenticationResultCache"/>.
     /// </summary>
     /// <remarks>
-    /// Register a concrete distributed cache provider before calling this method, e.g.:
+    /// Register a distributed cache provider before calling this method, e.g.:
     /// <code>
     /// services.AddStackExchangeRedisCache(o => o.Configuration = "localhost");
     /// services.AddAuthentication().AddDistributedResultCache();
     /// </code>
+    /// For a first-class Redis experience use <c>Primitives.Caching.Redis</c> and
+    /// call <c>AddPrimitivesCacheRedis()</c> before registering the auth builder.
     /// </remarks>
     public AuthenticationBuilder AddDistributedResultCache(
         Action<AuthenticationCacheOptions>? configure = null)
@@ -210,8 +214,9 @@ public sealed class AuthenticationBuilder
         if (configure is not null)
             Services.Configure(configure);
 
+        Services.AddPrimitivesCacheDistributed();
         Services.Replace(ServiceDescriptor.Singleton<IAuthenticationResultCache,
-                                                     DistributedAuthenticationResultCache>());
+                                                     PrimitivesAuthenticationResultCache>());
         return this;
     }
 
