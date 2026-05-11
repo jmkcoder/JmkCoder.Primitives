@@ -28,4 +28,11 @@
   <Folder Name="/Resilience/tests/">
     <Project Path="Resilience/tests/Primitives.Resilience.Tests/Primitives.Resilience.Tests.csproj" />
   </Folder>
+  <Folder Name="/Storage/src/">
+    <Project Path="Storage/src/Primitives.Storage/Primitives.Storage.csproj" />
+    <Project Path="Storage/src/Primitives.Storage.Azure/Primitives.Storage.Azure.csproj" />
+  </Folder>
+  <Folder Name="/Storage/tests/">
+    <Project Path="Storage/tests/Primitives.Storage.Tests/Primitives.Storage.Tests.csproj" />
+  </Folder>
 </Solution>

@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>Primitives.Storage.Azure</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>JmkCoder</Authors>
+    <Description>Azure Blob Storage provider for Primitives.Storage. Supports connection strings, shared-key credentials, and managed identity (via BlobServiceClient overload). Includes signed URL generation via SAS tokens.</Description>
+    <PackageTags>storage;azure;blob;azure-storage;sas;nuget</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jmkcoder/JmkCoder.Primitives</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jmkcoder/JmkCoder.Primitives.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs"                                    Version="12.22.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"  Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"              Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options"                           Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Primitives.Storage\Primitives.Storage.csproj" />
+  </ItemGroup>
+
+</Project>

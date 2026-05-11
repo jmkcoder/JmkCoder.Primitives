@@ -53,6 +53,11 @@ libraries:
     icon: bi-shield-fill-check
     description: Circuit breakers, retry policies, bulkheads, and timeouts built on Polly v8 — pre-wired for .NET DI with zero boilerplate.
 
+  - title: Storage
+    url: /storage/
+    icon: bi-database-fill
+    description: Abstraction over Azure Blob, S3, and local filesystem with streaming, signed URLs, and object lifecycle management.
+
 # ── Per-library sidebar navigation ───────────────────────────────────────────
 navigation:
   authentication:
@@ -192,3 +197,23 @@ navigation:
       items:
         - title: Configuration Reference
           url: /resilience/reference/
+
+  storage:
+    - title: Getting Started
+      items:
+        - title: Introduction
+          url: /storage/
+        - title: Installation
+          url: /storage/getting-started/
+
+    - title: Core Concepts
+      items:
+        - title: Operations
+          url: /storage/operations/
+        - title: Providers
+          url: /storage/providers/
+
+    - title: Reference
+      items:
+        - title: Configuration Reference
+          url: /storage/reference/

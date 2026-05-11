@@ -900,18 +900,19 @@
       </a>
 
       <!-- Storage -->
-      <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Storage — coming soon">
-        <div class="lib-icon" style="color:var(--text-subtle);">
+      <a class="lib-card" href="{{ '/storage/' | relative_url }}" role="listitem" aria-label="Primitives.Storage">
+        <div class="lib-icon" style="background:hsla(199,89%,48%,0.08);border-color:hsla(199,89%,48%,0.2);color:var(--cyan);">
           <i class="bi bi-database-fill"></i>
         </div>
-        <span class="lib-badge lib-badge-soon">Coming soon</span>
+        <span class="lib-badge lib-badge-live">&#x25CF; Live</span>
         <h3>Primitives.Storage</h3>
         <p>Abstraction over Azure Blob, S3, and local filesystem with streaming, signed URLs, and object lifecycle management.</p>
         <div class="lib-pkgs">
           <span class="lib-pkg">Primitives.Storage</span>
           <span class="lib-pkg">Primitives.Storage.Azure</span>
         </div>
-      </div>
+        <i class="bi bi-arrow-up-right lib-arrow" aria-hidden="true"></i>
+      </a>
 
       <!-- Multitenancy -->
       <div class="lib-card lib-card-dim" role="listitem" aria-label="Primitives.Multitenancy — coming soon">

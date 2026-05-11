@@ -87,6 +87,8 @@ jobs:
           dotnet pack Messaging/src/Primitives.Messaging                     --configuration Release --no-build --output ./nupkg
           dotnet pack Messaging/src/Primitives.Messaging.RabbitMQ            --configuration Release --no-build --output ./nupkg
           dotnet pack Resilience/src/Primitives.Resilience                   --configuration Release --no-build --output ./nupkg
+          dotnet pack Storage/src/Primitives.Storage                         --configuration Release --no-build --output ./nupkg
+          dotnet pack Storage/src/Primitives.Storage.Azure                   --configuration Release --no-build --output ./nupkg
 
       - name: Upload NuGet artifacts
         uses: actions/upload-artifact@v4
