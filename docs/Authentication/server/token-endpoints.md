@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Token Endpoints
@@ -9,20 +9,20 @@ permalink: /authentication/server/token-endpoints/
 ## What is a token endpoint?
 
 A _token endpoint_ is an HTTP route that accepts credentials and returns a signed token. The term
-comes from [OAuth 2.0 (RFC 6749 ┬º3.2)](https://datatracker.ietf.org/doc/html/rfc6749#section-3.2),
+comes from [OAuth 2.0 (RFC 6749 §3.2)](https://datatracker.ietf.org/doc/html/rfc6749#section-3.2),
 which defines a standard interface for this exchange.
 
 Without `MapPrimitivesTokenEndpoints()`, your service can only issue tokens programmatically
 (via `ITokenIssuanceService`). That is fine for service-to-service calls where the caller injects
-the service and calls it directly. But when your clients are external ΓÇö a browser SPA, a mobile
-app, or a CLI tool written in Python ΓÇö they need an HTTP API to authenticate against.
+the service and calls it directly. But when your clients are external — a browser SPA, a mobile
+app, or a CLI tool written in Python — they need an HTTP API to authenticate against.
 
 `MapPrimitivesTokenEndpoints()` gives you the full lifecycle over HTTP in a single call:
 
 ```
-curl POST /token        ΓåÆ  receive accessToken + refreshToken
-curl POST /token/refresh ΓåÆ  exchange refreshToken for a new pair (old one revoked)
-curl POST /token/revoke  ΓåÆ  invalidate a refresh token immediately (logout)
+curl POST /token        →  receive accessToken + refreshToken
+curl POST /token/refresh →  exchange refreshToken for a new pair (old one revoked)
+curl POST /token/revoke  →  invalidate a refresh token immediately (logout)
 ```
 
 
@@ -35,13 +35,13 @@ app.MapPrimitivesTokenEndpoints();            // mounts at /token (default)
 app.MapPrimitivesTokenEndpoints("/auth");     // or a custom prefix
 ```
 
-All three endpoints call `.AllowAnonymous()` ΓÇö the credential check happens inside the strategy
+All three endpoints call `.AllowAnonymous()` — the credential check happens inside the strategy
 itself, not at the HTTP middleware layer. This is intentional: requiring `[Authorize]` on a login
 endpoint creates a circular dependency (you need a token to get a token).
 
 <div class="bd-callout bd-callout-warning">
 <strong>Apply rate limiting in production.</strong> Without rate limiting, <code>POST /token</code>
-can be used for credential-stuffing attacks ΓÇö automated tools that try thousands of
+can be used for credential-stuffing attacks — automated tools that try thousands of
 username/password combinations per second. Use <code>builder.Services.AddRateLimiter()</code>
 with a fixed-window or sliding-window policy:
 <pre><code class="language-csharp">builder.Services.AddRateLimiter(o =&gt;
@@ -70,7 +70,7 @@ app.MapPrimitivesTokenEndpoints()
 
 ---
 
-## `POST /token` ΓÇö authenticate
+## `POST /token` — authenticate
 
 Issue a new access token and refresh token using any registered strategy.
 
@@ -84,14 +84,14 @@ Issue a new access token and refresh token using any registered strategy.
 
 ```json
 {
-  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9ΓÇª",
+  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…",
   "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4",
   "tokenType":    "Bearer",
   "expiresAt":    "2026-05-10T15:00:00+00:00"
 }
 ```
 
-**Example ΓÇö cURL:**
+**Example — cURL:**
 
 ```bash
 curl -X POST https://myapp.example.com/token \
@@ -99,7 +99,7 @@ curl -X POST https://myapp.example.com/token \
      -d '{"strategyName":"OIDC"}'
 ```
 
-**Example ΓÇö .NET `HttpClient`:**
+**Example — .NET `HttpClient`:**
 
 ```csharp
 var response = await http.PostAsJsonAsync("/token",
@@ -110,7 +110,7 @@ var token = await response.Content.ReadFromJsonAsync<TokenResponse>();
 
 ---
 
-## `POST /token/refresh` ΓÇö rotate refresh token
+## `POST /token/refresh` — rotate refresh token
 
 Exchange a valid refresh token for a new access token and a **new** refresh token. The old refresh token is revoked immediately.
 
@@ -130,7 +130,7 @@ and never present an old one after rotation.
 
 ---
 
-## `POST /token/revoke` ΓÇö revoke refresh token
+## `POST /token/revoke` — revoke refresh token
 
 Immediately invalidate a refresh token so it can no longer be used.
 
@@ -157,7 +157,7 @@ Immediately invalidate a refresh token so it can no longer be used.
 
 ## Security recommendations
 
-- Serve these endpoints over **HTTPS only** ΓÇö never HTTP in production.
+- Serve these endpoints over **HTTPS only** — never HTTP in production.
 - Apply **rate limiting** (`AddRateLimiter`) to `/token` to prevent credential stuffing.
 - Store the `SigningKey` in a secrets manager (Azure Key Vault, AWS Secrets Manager, etc.) and rotate it periodically.
 - Revoke refresh tokens on logout via `POST /token/revoke`.

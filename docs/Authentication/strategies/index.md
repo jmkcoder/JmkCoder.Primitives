@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Strategies
@@ -23,7 +23,7 @@ public interface IAuthenticationStrategy
     // Return false here and the library skips AuthenticateAsync entirely.
     Task<bool> CanHandleAsync(CancellationToken ct = default);
 
-    // The actual credential verification. Never throw ΓÇö return a failure result instead.
+    // The actual credential verification. Never throw — return a failure result instead.
     Task<AuthenticationResult> AuthenticateAsync(CancellationToken ct = default);
 }
 ```
@@ -38,25 +38,25 @@ get a standard JWT back regardless of what happened underneath.
 
 | Strategy | Best for | Page |
 |---|---|---|
-| [OIDC]({{ '/authentication/strategies/oidc/' | relative_url }}) | Azure AD, Okta, Auth0, any OAuth 2.0 IdP ΓÇö machine-to-machine or user login | [OIDC ΓåÆ]({{ '/authentication/strategies/oidc/' | relative_url }}) |
-| [Username / Password]({{ '/authentication/strategies/username-password/' | relative_url }}) | Internal services, legacy systems, test environments | [Username/Password ΓåÆ]({{ '/authentication/strategies/username-password/' | relative_url }}) |
-| [Kerberos]({{ '/authentication/strategies/kerberos/' | relative_url }}) | Windows domain environments, on-premises services, intranet apps | [Kerberos ΓåÆ]({{ '/authentication/strategies/kerberos/' | relative_url }}) |
-| [API Key]({{ '/authentication/strategies/api-key/' | relative_url }}) | Partner integrations, webhooks, service-to-service calls with a shared secret | [API Key ΓåÆ]({{ '/authentication/strategies/api-key/' | relative_url }}) |
-| [Custom]({{ '/authentication/strategies/custom/' | relative_url }}) | Smart cards, biometrics, OTP, LDAP ΓÇö anything not covered above | [Custom ΓåÆ]({{ '/authentication/strategies/custom/' | relative_url }}) |
+| [OIDC]({{ '/authentication/strategies/oidc/' | relative_url }}) | Azure AD, Okta, Auth0, any OAuth 2.0 IdP — machine-to-machine or user login | [OIDC →]({{ '/authentication/strategies/oidc/' | relative_url }}) |
+| [Username / Password]({{ '/authentication/strategies/username-password/' | relative_url }}) | Internal services, legacy systems, test environments | [Username/Password →]({{ '/authentication/strategies/username-password/' | relative_url }}) |
+| [Kerberos]({{ '/authentication/strategies/kerberos/' | relative_url }}) | Windows domain environments, on-premises services, intranet apps | [Kerberos →]({{ '/authentication/strategies/kerberos/' | relative_url }}) |
+| [API Key]({{ '/authentication/strategies/api-key/' | relative_url }}) | Partner integrations, webhooks, service-to-service calls with a shared secret | [API Key →]({{ '/authentication/strategies/api-key/' | relative_url }}) |
+| [Custom]({{ '/authentication/strategies/custom/' | relative_url }}) | Smart cards, biometrics, OTP, LDAP — anything not covered above | [Custom →]({{ '/authentication/strategies/custom/' | relative_url }}) |
 
 ---
 
 ## Registering strategies
 
-Call `AddAuthentication()` and chain as many strategies as you need. Each registration is independent ΓÇö order within the chain does not matter for strategy resolution:
+Call `AddAuthentication()` and chain as many strategies as you need. Each registration is independent — order within the chain does not matter for strategy resolution:
 
 ```csharp
 builder.Services
     .AddAuthentication()         // registers the core infrastructure
-    .AddOidc(o => { ΓÇª })       // registers strategy named "OIDC"
-    .AddKerberos(o => { ΓÇª })   // registers strategy named "Kerberos"
-    .AddApiKey(o => { ΓÇª })     // registers strategy named "ApiKey"
-    .AddJwtTokenIssuance(o => { ΓÇª });  // required to issue JWTs
+    .AddOidc(o => { … })       // registers strategy named "OIDC"
+    .AddKerberos(o => { … })   // registers strategy named "Kerberos"
+    .AddApiKey(o => { … })     // registers strategy named "ApiKey"
+    .AddJwtTokenIssuance(o => { … });  // required to issue JWTs
 ```
 
 ### Named registrations
@@ -67,11 +67,11 @@ different API key partners), pass an explicit name as the first argument:
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddOidc("Internal", o => { o.Authority = "https://login.microsoftonline.com/ΓÇª"; ΓÇª })
-    .AddOidc("External", o => { o.Authority = "https://accounts.google.com"; ΓÇª })
+    .AddOidc("Internal", o => { o.Authority = "https://login.microsoftonline.com/…"; … })
+    .AddOidc("External", o => { o.Authority = "https://accounts.google.com"; … })
     .AddApiKey("PartnerA", o => { o.ApiKey = config["Partners:A:Key"]!; })
     .AddApiKey("PartnerB", o => { o.ApiKey = config["Partners:B:Key"]!; })
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddJwtTokenIssuance(o => { … });
 ```
 
 Then resolve by name at runtime:
@@ -104,7 +104,7 @@ Every strategy returns an `AuthenticationResult`. The JWT issuance layer uses th
 |---|---|---|
 | `IsSuccess` | `bool` | Whether authentication succeeded |
 | `AccessToken` | `string?` | The raw credential result (e.g. Negotiate token, API key). Overwritten by the JWT before being returned to the caller. |
-| `Subject` | `string?` | The authenticated identity ΓÇö becomes the JWT `sub` claim |
+| `Subject` | `string?` | The authenticated identity — becomes the JWT `sub` claim |
 | `TokenType` | `string?` | Usually `"Bearer"` |
 | `ExpiresAt` | `DateTimeOffset?` | When the raw credential expires |
 | `Claims` | `IReadOnlyDictionary<string, string>?` | Extra claims to embed in the JWT |

@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Extending
@@ -10,9 +10,9 @@ permalink: /authentication/extending/
 
 ```
 src/Primitives.Authentication/Strategies/
-ΓööΓöÇΓöÇ MyCustom/
-    Γö£ΓöÇΓöÇ MyCustomAuthenticationOptions.cs
-    ΓööΓöÇΓöÇ MyCustomAuthenticationStrategy.cs
+└── MyCustom/
+    ├── MyCustomAuthenticationOptions.cs
+    └── MyCustomAuthenticationStrategy.cs
 ```
 
 ---
@@ -99,7 +99,7 @@ public sealed class MyCustomAuthenticationStrategy : IAuthenticationStrategy
 Add an extension method on `AuthenticationBuilder` inside your slice
 (or call `AddCustomStrategy<T>()` directly):
 
-### Option A ΓÇö use the built-in helper
+### Option A — use the built-in helper
 
 ```csharp
 services.AddAuthentication()
@@ -113,7 +113,7 @@ services.Configure<MyCustomAuthenticationOptions>(o =>
 });
 ```
 
-### Option B ΓÇö add a dedicated extension method (recommended for reusability)
+### Option B — add a dedicated extension method (recommended for reusability)
 
 ```csharp
 // Strategies/MyCustom/MyCustomAuthenticationBuilderExtensions.cs
@@ -172,6 +172,6 @@ var result = await tokenService.AuthenticateAsync("MyCustom", ct);
 ## Guidelines
 
 - **Keep the slice self-contained.** Options and strategy live together; no cross-slice imports.
-- **Set `Subject`** in the success result ΓÇö it becomes the JWT `sub` claim.
+- **Set `Subject`** in the success result — it becomes the JWT `sub` claim.
 - **Never throw** from `AuthenticateAsync`; return `AuthenticationResult.Failure(...)` instead.
 - **Log errors** but do not include sensitive credential values in log messages.

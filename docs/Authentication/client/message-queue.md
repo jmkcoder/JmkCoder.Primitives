@@ -1,8 +1,8 @@
----
+﻿---
 layout: default
 library: authentication
 title: Message Queue (Client)
-description: IMessageTokenAttacher writes Authorization headers into any dictionary-based message header bag ΓÇö broker-agnostic by design.
+description: IMessageTokenAttacher writes Authorization headers into any dictionary-based message header bag — broker-agnostic by design.
 permalink: /authentication/client/message-queue/
 ---
 
@@ -10,7 +10,7 @@ permalink: /authentication/client/message-queue/
 
 When a producer publishes a message to a broker, it needs to prove its identity to the consumer
 that will eventually process that message. Unlike HTTP, there is no `Authorization` header in the
-HTTP sense ΓÇö but most message brokers support user-defined **message properties** or **headers**:
+HTTP sense — but most message brokers support user-defined **message properties** or **headers**:
 key-value pairs attached to each message alongside the payload.
 
 `IMessageTokenAttacher` acquires a JWT and writes it into a plain `IDictionary<string, string>`.
@@ -19,8 +19,8 @@ the dictionary, pass it to the attacher, and then copy the resulting key-value p
 your broker uses for message metadata:
 
 ```
-IDictionary<string, string>  ΓåÆ  { "Authorization": "Bearer eyJ..." }
-                    Γåô
+IDictionary<string, string>  →  { "Authorization": "Bearer eyJ..." }
+                    ↓
   RabbitMQ BasicProperties.Headers
   Azure Service Bus ApplicationProperties
   Kafka Message.Headers
@@ -34,7 +34,7 @@ the access token, and writes `headers["Authorization"] = $"Bearer {token}"`.
 
 ## Overview
 
-`IMessageTokenAttacher` acquires a JWT and writes it into an `IDictionary<string, string>` header bag. Because it works against a plain dictionary, it is completely broker-agnostic ΓÇö the same code works with RabbitMQ, Azure Service Bus, Kafka, AWS SQS, or any other system that maps message headers to string key-value pairs.
+`IMessageTokenAttacher` acquires a JWT and writes it into an `IDictionary<string, string>` header bag. Because it works against a plain dictionary, it is completely broker-agnostic — the same code works with RabbitMQ, Azure Service Bus, Kafka, AWS SQS, or any other system that maps message headers to string key-value pairs.
 
 ---
 
@@ -44,7 +44,7 @@ the access token, and writes `headers["Authorization"] = $"Bearer {token}"`.
 builder.Services
     .AddAuthentication()
     .AddApiKey("PartnerBus", o => { o.ApiKey = config["Bus:ApiKey"]!; })
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddJwtTokenIssuance(o => { … });
 
 builder.Services.AddPrimitivesClientAuthentication();  // registers IMessageTokenAttacher
 ```

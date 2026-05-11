@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Health Checks
@@ -6,19 +6,19 @@ description: The built-in health check calls CanHandleAsync on every registered 
 permalink: /authentication/health-checks/
 ---
 
-## What the health check does ΓÇö and why
+## What the health check does — and why
 
 A health check endpoint (`/healthz`) tells infrastructure (Kubernetes, Azure App Service, load
 balancers, monitoring tools) whether your service is ready to handle traffic.
 
 For an authentication service, "healthy" means: the strategies are configured correctly and can
 reach their dependencies (the OIDC authority, the Kerberos KDC, the user database). If a strategy
-is misconfigured or its dependency is unreachable, incoming authentication requests will fail ΓÇö
+is misconfigured or its dependency is unreachable, incoming authentication requests will fail —
 but the failure might not be obvious until a user tries to log in.
 
 The Primitives health check surfaces this proactively by calling `CanHandleAsync()` on each
 registered strategy on a polling schedule (typically every 30 seconds). This is not a full
-authentication round-trip ΓÇö `CanHandleAsync()` is designed to be a cheap connectivity check:
+authentication round-trip — `CanHandleAsync()` is designed to be a cheap connectivity check:
 
 - **OIDC**: fetch the OIDC discovery document (`{Authority}/.well-known/openid-configuration`)
 - **Kerberos**: verify the SPN is resolvable and the GSSAPI library is available
@@ -36,8 +36,8 @@ should be removed from the load balancer until it recovers.
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddOidc(o => { ΓÇª })
-    .AddJwtTokenIssuance(o => { ΓÇª })
+    .AddOidc(o => { … })
+    .AddJwtTokenIssuance(o => { … })
     .AddHealthCheck(
         name:          "authentication",      // default
         failureStatus: HealthStatus.Degraded, // default

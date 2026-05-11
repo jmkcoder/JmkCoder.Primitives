@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Message Queue (Server)
@@ -9,34 +9,34 @@ permalink: /authentication/server/message-queue/
 ## Why message queue authentication is different
 
 HTTP is synchronous: a client sends a request and waits for a response. Authentication is
-straightforward ΓÇö a 401 response tells the client to re-authenticate before retrying.
+straightforward — a 401 response tells the client to re-authenticate before retrying.
 
 Message queues are asynchronous: a producer publishes a message to a broker (RabbitMQ, Azure
-Service Bus, Kafka, SQS) and moves on. The consumer processes the message later ΓÇö possibly seconds,
+Service Bus, Kafka, SQS) and moves on. The consumer processes the message later — possibly seconds,
 minutes, or hours later. By the time your consumer reads the message:
 
-- The producerΓÇÖs JWT access token may have **already expired**.
-- There is no synchronous channel to send a 401 ΓÇö the message is either processed or dead-lettered.
+- The producer’s JWT access token may have **already expired**.
+- There is no synchronous channel to send a 401 — the message is either processed or dead-lettered.
 - The producer cannot be prompted to re-authenticate mid-flight.
 
 This creates a fundamental tension: you want the consumer to verify the message came from an
-authorized producer, but the short-lived JWT model doesnΓÇÖt map naturally to fire-and-forget delivery.
+authorized producer, but the short-lived JWT model doesn’t map naturally to fire-and-forget delivery.
 
 **Recommended approaches:**
 
 1. **Issue a long-lived token** just for message signing (with a dedicated audience claim), or
 2. **Sign with an API key** instead of a JWT (no expiry concern), or
-3. **Accept expired tokens** with a grace window if the brokerΓÇÖs delivery latency is bounded.
+3. **Accept expired tokens** with a grace window if the broker’s delivery latency is bounded.
 
 `MessageAuthenticationMiddlewareBase<TContext>` gives you the infrastructure to implement whichever
 approach fits your requirements. You provide the `IMessageAuthenticationContext` that knows how to
-extract the credential from your brokerΓÇÖs message format; the base class handles validation.
+extract the credential from your broker’s message format; the base class handles validation.
 
 ---
 
 ## Overview
 
-`MessageAuthenticationMiddlewareBase<TContext>` is an abstract class you subclass to authenticate inbound messages from any broker ΓÇö RabbitMQ, Azure Service Bus, Kafka, AWS SQS, etc.
+`MessageAuthenticationMiddlewareBase<TContext>` is an abstract class you subclass to authenticate inbound messages from any broker — RabbitMQ, Azure Service Bus, Kafka, AWS SQS, etc.
 
 Your `TContext` type must implement `IMessageAuthenticationContext`:
 
@@ -119,7 +119,7 @@ public sealed class RabbitAuthMiddleware
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddJwtTokenIssuance(o => { … });
 
 builder.Services.AddPrimitivesAspNetCoreAuthentication();
 builder.Services.AddScoped<RabbitAuthMiddleware>();

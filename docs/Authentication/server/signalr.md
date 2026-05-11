@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: SignalR Hub Filter
@@ -8,18 +8,18 @@ permalink: /authentication/server/signalr/
 
 ## Why SignalR authentication is different
 
-SignalR uses persistent connections ΓÇö WebSockets in most cases, with long-polling as a fallback.
+SignalR uses persistent connections — WebSockets in most cases, with long-polling as a fallback.
 This creates authentication challenges that don't exist in regular HTTP:
 
 **Browsers cannot set headers on WebSocket connections.** The `Authorization: Bearer <token>` header
 that works perfectly for `fetch()` calls is not available during the WebSocket handshake. The
 browser WebSocket API does not expose a way to set custom headers. This means the token must be
-transmitted some other way ΓÇö the accepted workaround is to include it as a URL query parameter
+transmitted some other way — the accepted workaround is to include it as a URL query parameter
 (`?access_token=...`). The server reads it from the URL rather than the header.
 
 **Sessions outlive tokens.** A client connects once and holds the connection open for minutes or
 hours. An access token issued at connection time might expire while the session is still active.
-A guard at connection time alone is not sufficient ΓÇö the token must also be validated before each
+A guard at connection time alone is not sufficient — the token must also be validated before each
 hub method call.
 
 `AuthenticationHubFilter` handles both concerns: it validates at connection and re-validates before
@@ -32,8 +32,8 @@ clients) or the `?access_token=` query string (for browser clients).
 
 `AuthenticationHubFilter` implements `IHubFilter` and guards SignalR hubs at two points:
 
-1. **`OnConnectedAsync`** ΓÇö validates the token when the client connects; disconnects unauthenticated clients immediately
-2. **`InvokeMethodAsync`** ΓÇö re-validates the token before each hub method call (guards against tokens that expire mid-session)
+1. **`OnConnectedAsync`** — validates the token when the client connects; disconnects unauthenticated clients immediately
+2. **`InvokeMethodAsync`** — re-validates the token before each hub method call (guards against tokens that expire mid-session)
 
 The filter accepts the token from two sources (checked in order):
 
@@ -49,7 +49,7 @@ The filter accepts the token from two sources (checked in order):
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddJwtTokenIssuance(o => { … });
 
 builder.Services.AddPrimitivesAspNetCoreAuthentication();
 
@@ -66,7 +66,7 @@ builder.Services.AddSignalR();
 builder.Services.AddSingleton<AuthenticationHubFilter>();
 
 // In the hub class, apply the filter attribute:
-[HubMethodName("ΓÇª")]   // standard approach ΓÇö per-hub filters require manual registration
+[HubMethodName("…")]   // standard approach — per-hub filters require manual registration
 ```
 
 ---
@@ -90,7 +90,7 @@ public class ChatHub : Hub
 
 ---
 
-## JavaScript client ΓÇö sending the token
+## JavaScript client — sending the token
 
 Browser SignalR clients cannot set arbitrary headers. Use the `accessToken` factory function:
 
@@ -108,7 +108,7 @@ The token is sent as `?access_token=<token>` and the hub filter reads it from th
 
 ---
 
-## .NET client ΓÇö sending the token
+## .NET client — sending the token
 
 Use the Primitives SignalR extension (see [SignalR Client]({{ '/authentication/client/signalr/' | relative_url }})):
 

@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: gRPC Client
@@ -8,22 +8,22 @@ permalink: /authentication/client/grpc/
 
 ## gRPC client credentials vs HTTP headers
 
-When you make an HTTP call, setting an `Authorization` header is trivial ΓÇö itΓÇÖs just a header.
+When you make an HTTP call, setting an `Authorization` header is trivial — it’s just a header.
 gRPC has two different mechanisms, and which one you use depends on the channel security:
 
-**`CallCredentials`** ΓÇö the gRPC-native approach. Credentials are provided as a delegate that
+**`CallCredentials`** — the gRPC-native approach. Credentials are provided as a delegate that
 attaches metadata before each call. This is the correct approach for production TLS channels.
 However, gRPC enforces that `CallCredentials` can only be used with encrypted channels (TLS).
 Attempting to use them on a plaintext (`http://`) channel throws a `InvalidOperationException`.
 
-**Interceptor** ΓÇö an alternative that works with plaintext channels. The interceptor pattern
-applies metadata in the same way as `AuthenticatingHandler` does for HTTP ΓÇö it runs before
+**Interceptor** — an alternative that works with plaintext channels. The interceptor pattern
+applies metadata in the same way as `AuthenticatingHandler` does for HTTP — it runs before
 every outbound call and injects the token. Use this in development environments, service-mesh
 scenarios where TLS is terminated at the sidecar, or any time you cannot use `CallCredentials`.
 
 `PrimitivesGrpcCredentials` provides both:
-- `.Create(ΓÇª)` ΓÇö for TLS channels (production)
-- `.CreateInterceptor(ΓÇª)` ΓÇö for insecure channels (development)
+- `.Create(…)` — for TLS channels (production)
+- `.CreateInterceptor(…)` — for insecure channels (development)
 
 ---
 
@@ -33,8 +33,8 @@ Two options depending on the channel security:
 
 | Scenario | API |
 |---|---|
-| HTTPS / TLS channel | `PrimitivesGrpcCredentials.Create(ΓÇª)` ΓÇö uses `CallCredentials` |
-| HTTP / insecure channel | `PrimitivesGrpcCredentials.CreateInterceptor(ΓÇª)` ΓÇö uses an `Interceptor` |
+| HTTPS / TLS channel | `PrimitivesGrpcCredentials.Create(…)` — uses `CallCredentials` |
+| HTTP / insecure channel | `PrimitivesGrpcCredentials.CreateInterceptor(…)` — uses an `Interceptor` |
 
 Both inject a fresh `Bearer` token into the call metadata for **all gRPC call types**: unary, client-streaming, server-streaming, and bidirectional streaming.
 

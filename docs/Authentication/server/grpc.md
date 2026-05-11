@@ -1,22 +1,22 @@
----
+﻿---
 layout: default
 library: authentication
 title: gRPC Interceptor
-description: AuthenticationServerInterceptor validates Bearer tokens on every inbound gRPC call type ΓÇö unary, streaming, and bidirectional.
+description: AuthenticationServerInterceptor validates Bearer tokens on every inbound gRPC call type — unary, streaming, and bidirectional.
 permalink: /authentication/server/grpc/
 ---
 
 ## gRPC metadata vs HTTP headers
 
-gRPC is based on HTTP/2, but it doesnΓÇÖt use the familiar HTTP `Authorization` header in the way
-you might expect. Instead, it uses **metadata** ΓÇö key-value pairs attached to each call in the
+gRPC is based on HTTP/2, but it doesn’t use the familiar HTTP `Authorization` header in the way
+you might expect. Instead, it uses **metadata** — key-value pairs attached to each call in the
 HTTP/2 HEADERS frame. The field is still named `authorization` (lowercase), but the mechanism
 for reading and writing it is gRPC-specific.
 
 On the server side, metadata is accessed via `ServerCallContext.RequestHeaders`. On the client
 side, it is attached via `CallOptions.Headers` or through `CallCredentials`. This is why gRPC
 authentication requires dedicated handling that is separate from the `UseAuthentication()` ASP.NET
-Core middleware ΓÇö the middleware reads `HttpContext.Request.Headers`, which is a different
+Core middleware — the middleware reads `HttpContext.Request.Headers`, which is a different
 abstraction.
 
 `AuthenticationServerInterceptor` bridges the gap: it runs in the gRPC interceptor pipeline
@@ -30,7 +30,7 @@ abstraction.
 `AuthenticationServerInterceptor` is a `Grpc.Core.Interceptors.Interceptor` subclass that:
 
 1. Reads the `authorization` metadata key from the inbound call context (case-insensitive)
-2. Strips the `Bearer ` prefix if present ΓÇö raw tokens are also accepted
+2. Strips the `Bearer ` prefix if present — raw tokens are also accepted
 3. Calls `IJwtTokenValidator.ValidateAsync(token)`
 4. On success, the call continues with a populated `ServerCallContext`
 5. On failure, throws `RpcException(StatusCode.Unauthenticated)`
@@ -46,7 +46,7 @@ The interceptor handles **all four gRPC call types**: unary, server-streaming, c
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddJwtTokenIssuance(o => { … });
 
 builder.Services.AddPrimitivesAspNetCoreAuthentication();
 
@@ -110,12 +110,12 @@ try
 }
 catch (RpcException ex) when (ex.StatusCode == StatusCode.Unauthenticated)
 {
-    // token expired ΓÇö re-authenticate and retry
+    // token expired — re-authenticate and retry
 }
 ```
 
 <div class="bd-callout bd-callout-tip">
 <strong>Tip:</strong> Use the client-side <code>AuthenticatingClientInterceptor</code> or
-<code>PrimitivesGrpcCredentials</code> ΓÇö they handle token refresh and retry automatically.
+<code>PrimitivesGrpcCredentials</code> — they handle token refresh and retry automatically.
 See <a href="{{ '/authentication/client/grpc/' | relative_url }}">gRPC Client</a>.
 </div>

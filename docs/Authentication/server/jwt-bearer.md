@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: JWT Bearer Validation
@@ -11,11 +11,11 @@ permalink: /authentication/server/jwt-bearer/
 When your API receives a request with `Authorization: Bearer <token>`, it needs to answer three
 questions before serving the response:
 
-1. **Is this token genuine?** ΓÇö did _this_ server sign it, or did someone forge it?
-2. **Has it expired?** ΓÇö tokens are time-limited; an old token should not grant access.
-3. **Is it for this API?** ΓÇö a token issued to service A should not be accepted by service B.
+1. **Is this token genuine?** — did _this_ server sign it, or did someone forge it?
+2. **Has it expired?** — tokens are time-limited; an old token should not grant access.
+3. **Is it for this API?** — a token issued to service A should not be accepted by service B.
 
-JWT validation answers all three locally ΓÇö **no network call** to the issuer or identity provider
+JWT validation answers all three locally — **no network call** to the issuer or identity provider
 is needed. The signature is verified cryptographically using the shared signing key. The `exp`,
 `iss`, and `aud` claims are checked against the expected values. The entire validation happens in
 microseconds, in memory.
@@ -25,8 +25,8 @@ call the identity provider on every request to check whether the token is still 
 trade revocation flexibility for speed and independence.
 
 **Issuance vs validation:**
-- `AddJwtTokenIssuance()` is about creating tokens ΓÇö outbound.
-- `AddPrimitivesJwtBearer()` is about accepting tokens ΓÇö inbound.
+- `AddJwtTokenIssuance()` is about creating tokens — outbound.
+- `AddPrimitivesJwtBearer()` is about accepting tokens — inbound.
 
 If your service both _issues_ tokens (is an auth server) and _validates_ them (is an API server),
 you need both.
@@ -39,7 +39,7 @@ you need both.
 
 - **HS256 validation** using the same `SigningKey` you configured in `AddJwtTokenIssuance`
 - **Issuer and audience** validation
-- **SignalR query-string token support** (`?access_token=ΓÇª`) for browser clients
+- **SignalR query-string token support** (`?access_token=…`) for browser clients
 
 ---
 
@@ -109,10 +109,10 @@ The JWT issued by this library always contains:
 | Claim | JWT field | Description |
 |---|---|---|
 | `sub` | `ClaimTypes.NameIdentifier` | Authenticated subject |
-| `iss` | ΓÇö | Issuer |
-| `aud` | ΓÇö | Audience |
-| `exp` | ΓÇö | Expiry (Unix timestamp) |
-| `iat` | ΓÇö | Issued-at |
+| `iss` | — | Issuer |
+| `aud` | — | Audience |
+| `exp` | — | Expiry (Unix timestamp) |
+| `iat` | — | Issued-at |
 | Custom claims | varies | Strategy-specific claims passed via `AuthenticationResult.Claims` |
 
 ```csharp
@@ -130,11 +130,11 @@ To register a non-default scheme (e.g. for multiple APIs on one host):
 builder.Services
     .AddAuthentication()
     .AddPrimitivesJwtBearer(
-        o => { ΓÇª },
+        o => { … },
         scheme: "InternalApi");   // default is JwtBearerDefaults.AuthenticationScheme
 
 // Then protect routes with the named scheme:
-app.MapGet("/internal/data", ΓÇª).RequireAuthorization("InternalApi");
+app.MapGet("/internal/data", …).RequireAuthorization("InternalApi");
 ```
 
 ---

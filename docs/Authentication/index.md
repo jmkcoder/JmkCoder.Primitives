@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 permalink: /authentication/
@@ -7,8 +7,8 @@ permalink: /authentication/
 <div class="bd-hero">
   <h1>Primitives.Authentication</h1>
   <p class="lead">
-    A .NET&nbsp;8 authentication library that unifies every credential mechanism ΓÇö OIDC, Kerberos,
-    API Key, Username/Password ΓÇö behind a single interface, and wraps each result in a signed JWT
+    A .NET&nbsp;8 authentication library that unifies every credential mechanism — OIDC, Kerberos,
+    API Key, Username/Password — behind a single interface, and wraps each result in a signed JWT
     with a rolling refresh token. Works across HTTP, gRPC, SignalR, and message queues.
   </p>
   <div class="bd-install">
@@ -25,12 +25,12 @@ touch code that should never have known about credentials at all.
 
 `Primitives.Authentication` separates the two concerns that are usually tangled together:
 
-**Credential verification** ΓÇö _is this token/password/ticket valid?_
+**Credential verification** — _is this token/password/ticket valid?_
 Each mechanism is a self-contained **strategy**. You register only the ones you need. Strategies
 are fully independent: adding, removing, or replacing one never affects any other.
 
-**Token issuance** ΓÇö _here is a signed JWT that proves who you are._
-Every successful authentication ΓÇö regardless of which strategy handled it ΓÇö produces the same
+**Token issuance** — _here is a signed JWT that proves who you are._
+Every successful authentication — regardless of which strategy handled it — produces the same
 output: an HS256-signed JWT and a rolling refresh token. The rest of your codebase only ever sees
 a standard `Bearer` token. It never needs to know whether the user logged in via Azure AD or a
 Kerberos ticket.
@@ -39,7 +39,7 @@ Kerberos ticket.
   <div class="bd-feature-card">
     <span class="icon"><i class="bi bi-puzzle-fill"></i></span>
     <h5>Strategy Pattern</h5>
-    <p>OIDC, Username/Password, Kerberos, API Key ΓÇö or implement <code>IAuthenticationStrategy</code>
+    <p>OIDC, Username/Password, Kerberos, API Key — or implement <code>IAuthenticationStrategy</code>
     to support any custom mechanism. Register multiple strategies side-by-side; switch between them
     at runtime by name.</p>
   </div>
@@ -47,7 +47,7 @@ Kerberos ticket.
     <span class="icon"><i class="bi bi-key-fill"></i></span>
     <h5>JWT Issuance</h5>
     <p>Every successful authentication produces an HS256-signed JWT and a cryptographically random
-    rolling refresh token ΓÇö regardless of which strategy performed the verification. Your API always
+    rolling refresh token — regardless of which strategy performed the verification. Your API always
     speaks standard <code>Bearer</code>.</p>
   </div>
   <div class="bd-feature-card">
@@ -56,13 +56,13 @@ Kerberos ticket.
     <p>First-class support for HTTP (<code>AuthenticatingHandler</code>), gRPC
     (<code>PrimitivesGrpcCredentials</code>), SignalR
     (<code>WithPrimitivesAuthentication</code>), and any message queue
-    (<code>IMessageTokenAttacher</code>) ΓÇö on both client and server.</p>
+    (<code>IMessageTokenAttacher</code>) — on both client and server.</p>
   </div>
   <div class="bd-feature-card">
     <span class="icon"><i class="bi bi-box-fill"></i></span>
     <h5>DI-First</h5>
     <p>Fluent builder on <code>IServiceCollection</code>. Fully compatible with
-    <code>IOptions&lt;T&gt;</code>, <code>IConfiguration</code>, and any .NET 8 host ΓÇö no static
+    <code>IOptions&lt;T&gt;</code>, <code>IConfiguration</code>, and any .NET 8 host — no static
     state, no service locator.</p>
   </div>
   <div class="bd-feature-card">
@@ -75,7 +75,7 @@ Kerberos ticket.
     <span class="icon"><i class="bi bi-arrow-repeat"></i></span>
     <h5>Distributed Cache</h5>
     <p>Token results and refresh tokens are cached in-memory by default. Swap to Redis, SQL Server,
-    or any <code>IDistributedCache</code> provider in one line ΓÇö no code changes required.</p>
+    or any <code>IDistributedCache</code> provider in one line — no code changes required.</p>
   </div>
 </div>
 
@@ -112,11 +112,11 @@ only _receives_ authenticated requests doesn't need the client package.
 
 ## Quick look
 
-This is everything you need for a fully working authentication API ΓÇö strategies registered,
+This is everything you need for a fully working authentication API — strategies registered,
 tokens issued, endpoints exposed, and the API protected:
 
 ```csharp
-// Program.cs ΓÇö register strategies and JWT issuance
+// Program.cs — register strategies and JWT issuance
 builder.Services
     .AddAuthentication()
     .AddOidc(o =>                                   // verify credentials via Azure AD
@@ -129,7 +129,7 @@ builder.Services
     {
         o.Issuer     = "https://myapp.example.com";
         o.Audience   = "https://myapi.example.com";
-        o.SigningKey  = config["Jwt:SigningKey"]!;   // ΓëÑ 32 chars, keep in Key Vault
+        o.SigningKey  = config["Jwt:SigningKey"]!;   // ≥ 32 chars, keep in Key Vault
     })
     .AddPrimitivesJwtBearer();                      // validate inbound Bearer tokens
 
@@ -142,7 +142,7 @@ app.MapGet("/orders", (ClaimsPrincipal user) => Results.Ok(GetOrders(user)))
 ```
 
 ```csharp
-// Any service ΓÇö inject ITokenIssuanceService and call by strategy name
+// Any service — inject ITokenIssuanceService and call by strategy name
 var result = await tokenService.AuthenticateAsync("OIDC");
 
 if (result.IsSuccess)
@@ -154,7 +154,7 @@ if (result.IsSuccess)
 ```
 
 ```bash
-# Or call it over HTTP ΓÇö no code required on the client side
+# Or call it over HTTP — no code required on the client side
 curl -X POST https://myapp.example.com/token \
      -H "Content-Type: application/json" \
      -d '{"strategyName":"OIDC"}'

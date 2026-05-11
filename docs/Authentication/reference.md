@@ -1,8 +1,8 @@
----
+﻿---
 layout: default
 library: authentication
 title: Configuration Reference
-description: Complete options reference for all three packages ΓÇö JwtOptions, strategy options, cache options, and handler options.
+description: Complete options reference for all three packages — JwtOptions, strategy options, cache options, and handler options.
 permalink: /authentication/reference/
 ---
 
@@ -14,16 +14,16 @@ on which builder method populates that options class.
 
 ## `JwtOptions`
 
-Configured via `.AddJwtTokenIssuance(o => { ΓÇª })`. These values control both the tokens that are
+Configured via `.AddJwtTokenIssuance(o => { … })`. These values control both the tokens that are
 **issued** (signed with `SigningKey`) and the tokens that are **validated** inbound (if you also
 call `AddPrimitivesJwtBearer()`). The `Issuer`, `Audience`, and `SigningKey` must be identical in
 both calls.
 
 | Property | Type | Required | Default | Notes |
 |---|---|---|---|---|
-| `Issuer` | `string` | Γ£à | ΓÇö | Written as the `iss` claim in every issued JWT |
-| `Audience` | `string` | Γ£à | ΓÇö | Written as the `aud` claim; validated on inbound tokens |
-| `SigningKey` | `string` | Γ£à | ΓÇö | HS256 symmetric key ΓÇö **minimum 32 characters** |
+| `Issuer` | `string` | ✅ | — | Written as the `iss` claim in every issued JWT |
+| `Audience` | `string` | ✅ | — | Written as the `aud` claim; validated on inbound tokens |
+| `SigningKey` | `string` | ✅ | — | HS256 symmetric key — **minimum 32 characters** |
 | `AccessTokenLifetime` | `TimeSpan` | | `00:15:00` | How long each JWT is valid |
 | `RefreshTokenLifetime` | `TimeSpan` | | `7.00:00:00` | How long a refresh token can be used before it expires |
 
@@ -31,13 +31,13 @@ both calls.
 
 ## `OidcAuthenticationOptions`
 
-Configured via `.AddOidc(o => { ΓÇª })` or `.AddOidc("name", o => { ΓÇª })`. See the
+Configured via `.AddOidc(o => { … })` or `.AddOidc("name", o => { … })`. See the
 [OIDC strategy page]({{ '/authentication/strategies/oidc/' | relative_url }}) for a conceptual overview.
 
 | Property | Type | Required | Default | Notes |
 |---|---|---|---|---|
-| `Authority` | `string` | Γ£à | ΓÇö | OIDC discovery base URL |
-| `ClientId` | `string` | Γ£à | ΓÇö | Application (client) ID |
+| `Authority` | `string` | ✅ | — | OIDC discovery base URL |
+| `ClientId` | `string` | ✅ | — | Application (client) ID |
 | `ClientSecret` | `string?` | | `null` | Required for confidential clients |
 | `Scopes` | `IEnumerable<string>` | | `["{ClientId}/.default"]` | Requested OAuth2 scopes |
 | `Flow` | `OidcFlow` | | `ClientCredentials` | `ClientCredentials` or `ResourceOwnerPassword` |
@@ -48,12 +48,12 @@ Configured via `.AddOidc(o => { ΓÇª })` or `.AddOidc("name", o => { ΓÇª })
 
 ## `UsernamePasswordAuthenticationOptions`
 
-Configured via `.AddUsernamePassword(o => { ΓÇª })`.
+Configured via `.AddUsernamePassword(o => { … })`.
 
 | Property | Type | Required | Default | Notes |
 |---|---|---|---|---|
-| `Username` | `string` | Γ£à | ΓÇö | Account username |
-| `Password` | `string` | Γ£à | ΓÇö | Account password |
+| `Username` | `string` | ✅ | — | Account username |
+| `Password` | `string` | ✅ | — | Account password |
 | `Realm` | `string?` | | `null` | Optional Basic Auth realm |
 | `Encoding` | `Encoding` | | `UTF-8` | Character encoding for credential bytes |
 
@@ -61,11 +61,11 @@ Configured via `.AddUsernamePassword(o => { ΓÇª })`.
 
 ## `KerberosAuthenticationOptions`
 
-Configured via `.AddKerberos(o => { ΓÇª })`.
+Configured via `.AddKerberos(o => { … })`.
 
 | Property | Type | Required | Default | Notes |
 |---|---|---|---|---|
-| `ServicePrincipalName` | `string` | Γ£à | ΓÇö | Target SPN, e.g. `HTTP/host.corp.example.com` |
+| `ServicePrincipalName` | `string` | ✅ | — | Target SPN, e.g. `HTTP/host.corp.example.com` |
 | `Credential` | `NetworkCredentialOptions?` | | `null` | `null` = use process identity (recommended for Windows services) |
 | `Package` | `string` | | `"Kerberos"` | SSPI package name; `"Negotiate"` for NTLM fallback |
 
@@ -73,19 +73,19 @@ Configured via `.AddKerberos(o => { ΓÇª })`.
 
 | Property | Type | Required |
 |---|---|---|
-| `UserName` | `string` | Γ£à |
-| `Password` | `string` | Γ£à |
+| `UserName` | `string` | ✅ |
+| `Password` | `string` | ✅ |
 | `Domain` | `string?` | |
 
 ---
 
 ## `ApiKeyAuthenticationOptions`
 
-Configured via `.AddApiKey(o => { ΓÇª })`.
+Configured via `.AddApiKey(o => { … })`.
 
 | Property | Type | Required | Default | Notes |
 |---|---|---|---|---|
-| `ApiKey` | `string` | Γ£à | ΓÇö | The secret key value |
+| `ApiKey` | `string` | ✅ | — | The secret key value |
 | `Placement` | `ApiKeyPlacement` | | `Header` | `Header`, `QueryParameter`, or `BearerToken` |
 | `KeyName` | `string` | | `"X-API-Key"` | Header name or query parameter name |
 | `HeaderPrefix` | `string` | | `""` | Prefix prepended to the value (headers only) |
@@ -94,7 +94,7 @@ Configured via `.AddApiKey(o => { ΓÇª })`.
 
 ## `AuthenticationCacheOptions`
 
-Configured via `.AddResultCache(o => { ΓÇª })` or `.AddDistributedResultCache(o => { ΓÇª })`.
+Configured via `.AddResultCache(o => { … })` or `.AddDistributedResultCache(o => { … })`.
 
 | Property | Type | Default | Notes |
 |---|---|---|---|

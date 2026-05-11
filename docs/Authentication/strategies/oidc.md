@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: OIDC (OAuth 2.0)
@@ -17,14 +17,14 @@ configured authority. MSAL handles:
 
 - The token endpoint discovery (via the OIDC discovery document at `{Authority}/.well-known/openid-configuration`)
 - The actual HTTP credential exchange
-- Its own internal token cache ΓÇö MSAL reuses access tokens until they expire, avoiding unnecessary round-trips
+- Its own internal token cache — MSAL reuses access tokens until they expire, avoiding unnecessary round-trips
 
 The strategy supports two grant types:
 
 | Flow | `OidcFlow` value | When to use |
 |---|---|---|
 | **Client Credentials** | `ClientCredentials` (default) | Machine-to-machine: your service authenticates _as itself_, not on behalf of a user. Use for background jobs, microservice calls, and daemons. |
-| **Resource Owner Password** | `ResourceOwnerPassword` | A human userΓÇÖs credentials are passed directly to the token endpoint. Only use when the user cannot be redirected to a login page (e.g. a legacy desktop app). |
+| **Resource Owner Password** | `ResourceOwnerPassword` | A human user’s credentials are passed directly to the token endpoint. Only use when the user cannot be redirected to a login page (e.g. a legacy desktop app). |
 
 ---
 
@@ -48,7 +48,7 @@ services.AddAuthentication()
 ```
 
 **What the authority URL means:**
-- For Azure AD, the authority is `https://login.microsoftonline.com/{tenantId}/v2.0` where `{tenantId}` is your Azure AD tenantΓÇÖs GUID or domain name.
+- For Azure AD, the authority is `https://login.microsoftonline.com/{tenantId}/v2.0` where `{tenantId}` is your Azure AD tenant’s GUID or domain name.
 - For other providers (Auth0, Okta), replace with the appropriate base URL from their docs.
 - MSAL appends `/.well-known/openid-configuration` automatically to discover the token endpoint.
 
@@ -57,9 +57,9 @@ services.AddAuthentication()
 ## ROPC (Resource Owner Password Credentials)
 
 <div class="bd-callout bd-callout-warning">
-<strong>ROPC is a legacy flow with significant limitations.</strong> The userΓÇÖs credentials are
-transmitted to <em>your server</em> and then forwarded to the identity provider ΓÇö the user never
-interacts with the IdPΓÇÖs own login page. This breaks the security model that makes OAuth 2.0
+<strong>ROPC is a legacy flow with significant limitations.</strong> The user’s credentials are
+transmitted to <em>your server</em> and then forwarded to the identity provider — the user never
+interacts with the IdP’s own login page. This breaks the security model that makes OAuth 2.0
 trust-worthy: you become responsible for handling the raw password. Multi-factor authentication
 and Conditional Access policies cannot be enforced in ROPC flows. Most identity providers are
 actively deprecating it. Use authorization-code or device-code flows for user login wherever possible.
@@ -86,9 +86,9 @@ Use ROPC only when a redirect-based flow genuinely cannot be used:
 Register several OIDC tenants or providers side-by-side by supplying an explicit name:
 
 ```csharp
-.AddOidc("AzureAD",  o => { o.Authority = "https://login.microsoftonline.com/contoso/v2.0"; ΓÇª })
-.AddOidc("Okta",     o => { o.Authority = "https://contoso.okta.com/oauth2/default"; ΓÇª })
-.AddOidc("Internal", o => { o.Authority = "https://auth.internal.example.com"; ΓÇª })
+.AddOidc("AzureAD",  o => { o.Authority = "https://login.microsoftonline.com/contoso/v2.0"; … })
+.AddOidc("Okta",     o => { o.Authority = "https://contoso.okta.com/oauth2/default"; … })
+.AddOidc("Internal", o => { o.Authority = "https://auth.internal.example.com"; … })
 ```
 
 ---
@@ -97,13 +97,13 @@ Register several OIDC tenants or providers side-by-side by supplying an explicit
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `Authority` | `string` | Γ£à | ΓÇö | OIDC discovery base URL. MSAL appends `/.well-known/openid-configuration`. |
-| `ClientId` | `string` | Γ£à | ΓÇö | Application (client) ID registered with the identity provider. |
-| `ClientSecret` | `string?` | Γ£à for confidential clients | ΓÇö | Client secret. Never commit to source control. |
+| `Authority` | `string` | ✅ | — | OIDC discovery base URL. MSAL appends `/.well-known/openid-configuration`. |
+| `ClientId` | `string` | ✅ | — | Application (client) ID registered with the identity provider. |
+| `ClientSecret` | `string?` | ✅ for confidential clients | — | Client secret. Never commit to source control. |
 | `Scopes` | `IEnumerable<string>` | | `["{ClientId}/.default"]` | OAuth2 scopes to request. The `/.default` suffix requests all statically declared permissions. |
 | `Flow` | `OidcFlow` | | `ClientCredentials` | Grant type: `ClientCredentials` or `ResourceOwnerPassword`. |
-| `Username` | `string?` | ROPC only | ΓÇö | End-user login name. Only used when `Flow = ResourceOwnerPassword`. |
-| `Password` | `string?` | ROPC only | ΓÇö | End-user password. Only used when `Flow = ResourceOwnerPassword`. |
+| `Username` | `string?` | ROPC only | — | End-user login name. Only used when `Flow = ResourceOwnerPassword`. |
+| `Password` | `string?` | ROPC only | — | End-user password. Only used when `Flow = ResourceOwnerPassword`. |
 
 ---
 
@@ -111,8 +111,8 @@ Register several OIDC tenants or providers side-by-side by supplying an explicit
 
 The `sub` claim embedded in the issued JWT is set to:
 
-- **Client Credentials** ΓÇö `ClientId` (the applicationΓÇÖs identifier)
-- **ROPC** ΓÇö `Username` (the human userΓÇÖs identifier)
+- **Client Credentials** — `ClientId` (the application’s identifier)
+- **ROPC** — `Username` (the human user’s identifier)
 
 ---
 
@@ -140,7 +140,7 @@ result is returned immediately without making any network call. This is useful f
 ## Strategy name
 
 ```
-"OIDC"   (or whatever explicit name you passed to .AddOidc("name", o => ΓÇª))
+"OIDC"   (or whatever explicit name you passed to .AddOidc("name", o => …))
 ```
 
 ---
@@ -155,7 +155,7 @@ services.AddAuthentication()
         o.ClientId     = "your-app-client-id";
         o.ClientSecret = configuration["Oidc:ClientSecret"]!;
 
-        // Optional ΓÇö defaults to ["{ClientId}/.default"]
+        // Optional — defaults to ["{ClientId}/.default"]
         o.Scopes = ["https://graph.microsoft.com/.default"];
 
         // Default: OidcFlow.ClientCredentials
@@ -188,13 +188,13 @@ Re-evaluate whether a device-code or authorization-code flow is feasible before 
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `Authority` | `string` | Γ£à | ΓÇö | OAuth2 authority URL |
-| `ClientId` | `string` | Γ£à | ΓÇö | Application (client) ID |
-| `ClientSecret` | `string?` | Γ£à | ΓÇö | Client secret |
+| `Authority` | `string` | ✅ | — | OAuth2 authority URL |
+| `ClientId` | `string` | ✅ | — | Application (client) ID |
+| `ClientSecret` | `string?` | ✅ | — | Client secret |
 | `Scopes` | `IEnumerable<string>` | | `["{ClientId}/.default"]` | Requested scopes |
 | `Flow` | `OidcFlow` | | `ClientCredentials` | Grant type |
-| `Username` | `string?` | ROPC only | ΓÇö | End-user login |
-| `Password` | `string?` | ROPC only | ΓÇö | End-user password |
+| `Username` | `string?` | ROPC only | — | End-user login |
+| `Password` | `string?` | ROPC only | — | End-user password |
 
 ---
 
@@ -202,8 +202,8 @@ Re-evaluate whether a device-code or authorization-code flow is feasible before 
 
 The `Subject` populated on `AuthenticationResult` (used as the JWT `sub` claim) is:
 
-- **Client Credentials** ΓåÆ `ClientId`
-- **ROPC** ΓåÆ `Username`
+- **Client Credentials** → `ClientId`
+- **ROPC** → `Username`
 
 ---
 

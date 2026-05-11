@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: SignalR Client
@@ -8,9 +8,9 @@ permalink: /authentication/client/signalr/
 
 ## How SignalR client authentication works
 
-SignalRΓÇÖs `HubConnectionBuilder` supports an `accessTokenProvider` option ΓÇö a `Func<Task<string?>>`
+SignalR’s `HubConnectionBuilder` supports an `accessTokenProvider` option — a `Func<Task<string?>>`
 that the client calls to get a token before establishing a connection. This function is also called
-on every automatic reconnect, ensuring that an expired token from the original connection doesnΓÇÖt
+on every automatic reconnect, ensuring that an expired token from the original connection doesn’t
 block reconnection.
 
 `WithPrimitivesAuthentication` wraps `ITokenIssuanceService.AuthenticateAsync()` as the
@@ -33,11 +33,11 @@ call `accessTokenProvider` again to get a fresh token. This is the expected and 
 | `UsePrimitivesAuthentication` | You're already building `HttpConnectionOptions` manually |
 | `WithPrimitivesAuthentication` | You want a single-call builder pattern |
 
-Both inject a fresh token via `accessTokenProvider` ΓÇö SignalR's built-in hook that is called on every connection (including reconnects), ensuring tokens never expire mid-session.
+Both inject a fresh token via `accessTokenProvider` — SignalR's built-in hook that is called on every connection (including reconnects), ensuring tokens never expire mid-session.
 
 ---
 
-## Option A ΓÇö fluent builder (recommended)
+## Option A — fluent builder (recommended)
 
 ```csharp
 var connection = new HubConnectionBuilder()
@@ -52,7 +52,7 @@ await connection.StartAsync();
 
 ---
 
-## Option B ΓÇö configure options manually
+## Option B — configure options manually
 
 Use this when you need to set other `HttpConnectionOptions` as well (e.g. custom headers, transports):
 
@@ -76,8 +76,8 @@ var connection = new HubConnectionBuilder()
 // Register the services
 builder.Services
     .AddAuthentication()
-    .AddOidc(o => { ΓÇª })
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddOidc(o => { … })
+    .AddJwtTokenIssuance(o => { … });
 
 builder.Services.AddPrimitivesClientAuthentication();
 
@@ -99,7 +99,7 @@ builder.Services.AddSingleton(sp =>
 
 ## Reconnect handling
 
-SignalR calls `accessTokenProvider` on every reconnect attempt, so you get a fresh token automatically after a network interruption ΓÇö no extra code required.
+SignalR calls `accessTokenProvider` on every reconnect attempt, so you get a fresh token automatically after a network interruption — no extra code required.
 
 To enable automatic reconnect:
 

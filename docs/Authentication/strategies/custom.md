@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Custom Strategy
@@ -29,7 +29,7 @@ public sealed class SmartCardOptions
 }
 ```
 
-Use `System.ComponentModel.DataAnnotations` attributes ΓÇö the builder validates options with `ValidateDataAnnotations()` automatically.
+Use `System.ComponentModel.DataAnnotations` attributes — the builder validates options with `ValidateDataAnnotations()` automatically.
 
 ---
 
@@ -89,7 +89,7 @@ public sealed class SmartCardStrategy : IAuthenticationStrategy
 |---|---|
 | `Name` | Must be unique across all registered strategies (case-insensitive) |
 | `CanHandleAsync` | Return `false` when the prerequisite infrastructure is unavailable |
-| `AuthenticateAsync` | Return `AuthenticationResult.Success(ΓÇª)` or `AuthenticationResult.Failure(ΓÇª)` ΓÇö never throw |
+| `AuthenticateAsync` | Return `AuthenticationResult.Success(…)` or `AuthenticationResult.Failure(…)` — never throw |
 
 ---
 
@@ -99,7 +99,7 @@ public sealed class SmartCardStrategy : IAuthenticationStrategy
 builder.Services
     .AddAuthentication()
     .AddCustomStrategy<SmartCardStrategy>()
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddJwtTokenIssuance(o => { … });
 ```
 
 `AddCustomStrategy<T>()` registers `T` as a transient `IAuthenticationStrategy`.
@@ -126,7 +126,7 @@ builder.Services
 var result = await tokenService.AuthenticateAsync("SmartCard");
 ```
 
-`ITokenIssuanceService` wraps your strategy result in a JWT automatically ΓÇö no extra plumbing.
+`ITokenIssuanceService` wraps your strategy result in a JWT automatically — no extra plumbing.
 
 ---
 

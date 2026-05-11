@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: JWT & Refresh Tokens
@@ -27,9 +27,9 @@ services.AddAuthentication()
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `Issuer` | `string` | Γ£à | ΓÇö | JWT `iss` claim |
-| `Audience` | `string` | Γ£à | ΓÇö | JWT `aud` claim |
-| `SigningKey` | `string` | Γ£à | ΓÇö | HS256 symmetric key ΓÇö **must be ΓëÑ 32 characters** |
+| `Issuer` | `string` | ✅ | — | JWT `iss` claim |
+| `Audience` | `string` | ✅ | — | JWT `aud` claim |
+| `SigningKey` | `string` | ✅ | — | HS256 symmetric key — **must be ≥ 32 characters** |
 | `AccessTokenLifetime` | `TimeSpan` | | `00:15:00` | How long the JWT is valid |
 | `RefreshTokenLifetime` | `TimeSpan` | | `7.00:00:00` | How long a refresh token lives before expiry |
 
@@ -60,14 +60,14 @@ Algorithm: **HS256** (HMAC-SHA256).
 ## Authentication flow
 
 ```
-Caller ΓåÆ ITokenIssuanceService.AuthenticateAsync("StrategyName")
-           Γöé
-           Γö£ΓöÇ Resolves the named IAuthenticationStrategy via IAuthenticationStrategyFactory
-           Γö£ΓöÇ Calls strategy.AuthenticateAsync() to verify the identity
-           Γö£ΓöÇ On success: mints JWT via IJwtTokenService
-           ΓööΓöÇ Generates refresh token via IRefreshTokenStore
-           Γöé
-           ΓööΓöÇΓåÆ AuthenticationResult { AccessToken (JWT), RefreshToken, ExpiresAt, Subject }
+Caller → ITokenIssuanceService.AuthenticateAsync("StrategyName")
+           │
+           ├─ Resolves the named IAuthenticationStrategy via IAuthenticationStrategyFactory
+           ├─ Calls strategy.AuthenticateAsync() to verify the identity
+           ├─ On success: mints JWT via IJwtTokenService
+           └─ Generates refresh token via IRefreshTokenStore
+           │
+           └─→ AuthenticationResult { AccessToken (JWT), RefreshToken, ExpiresAt, Subject }
 ```
 
 ---
@@ -75,17 +75,17 @@ Caller ΓåÆ ITokenIssuanceService.AuthenticateAsync("StrategyName")
 ## Refresh flow (rolling rotation)
 
 ```
-Caller ΓåÆ ITokenIssuanceService.RefreshAsync(oldRefreshToken)
-           Γöé
-           Γö£ΓöÇ IRefreshTokenStore.ValidateAndRotateAsync(oldRefreshToken)
-           Γöé     Γö£ΓöÇ Validates token exists and is not expired / revoked
-           Γöé     Γö£ΓöÇ Marks old token as revoked
-           Γöé     ΓööΓöÇ Stores a new refresh token
-           Γö£ΓöÇ Mints a new JWT for the same subject
-           ΓööΓöÇΓåÆ AuthenticationResult { AccessToken (new JWT), RefreshToken (new token) }
+Caller → ITokenIssuanceService.RefreshAsync(oldRefreshToken)
+           │
+           ├─ IRefreshTokenStore.ValidateAndRotateAsync(oldRefreshToken)
+           │     ├─ Validates token exists and is not expired / revoked
+           │     ├─ Marks old token as revoked
+           │     └─ Stores a new refresh token
+           ├─ Mints a new JWT for the same subject
+           └─→ AuthenticationResult { AccessToken (new JWT), RefreshToken (new token) }
 ```
 
-Every refresh call **revokes the old token and issues a new one** ΓÇö rolling rotation.
+Every refresh call **revokes the old token and issues a new one** — rolling rotation.
 
 ---
 

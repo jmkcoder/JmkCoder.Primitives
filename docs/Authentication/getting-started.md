@@ -1,8 +1,8 @@
----
+﻿---
 layout: default
 library: authentication
 title: Getting Started
-description: Install Primitives.Authentication and issue your first JWT ΓÇö with a plain-English explanation of what is happening at every step.
+description: Install Primitives.Authentication and issue your first JWT — with a plain-English explanation of what is happening at every step.
 permalink: /authentication/getting-started/
 ---
 
@@ -14,38 +14,38 @@ When a client (a browser, a mobile app, another service) wants to access a prote
 
 `Primitives.Authentication` handles both sides:
 
-1. **Credential verification ΓÇö the strategy.** The strategy knows how to validate one specific kind of credential: an OAuth 2.0 token from Azure AD, a username/password pair, a Kerberos ticket, or an API key. You register the strategies your app needs at startup. The library calls the right one by name.
+1. **Credential verification — the strategy.** The strategy knows how to validate one specific kind of credential: an OAuth 2.0 token from Azure AD, a username/password pair, a Kerberos ticket, or an API key. You register the strategies your app needs at startup. The library calls the right one by name.
 
-2. **JWT issuance.** Once a credential is verified, the library wraps the result in a signed JWT and a rolling refresh token. Everything downstream only ever sees a standard `Bearer` token ΓÇö it never needs to know _which_ credential mechanism was used.
+2. **JWT issuance.** Once a credential is verified, the library wraps the result in a signed JWT and a rolling refresh token. Everything downstream only ever sees a standard `Bearer` token — it never needs to know _which_ credential mechanism was used.
 
 Here is the full flow, from login to protected API call:
 
 ```
 Client                      Your App                   Identity Provider
-  Γöé                            Γöé                               Γöé
-  Γö£ΓöÇΓöÇ POST /token ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓû║Γöé                               Γöé
-  Γöé   { strategyName:"OIDC" }  Γö£ΓöÇΓöÇ verify credential ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓû║Γöé
-  Γöé                            ΓöéΓùäΓöÇΓöÇ confirmed ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöé
-  Γöé                            Γöé  ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ   Γöé
-  Γöé                            Γöé  Γöé Sign JWT (HS256)     Γöé   Γöé
-  Γöé                            Γöé  Γöé Issue refresh token  Γöé   Γöé
-  Γöé                            Γöé  ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ   Γöé
-  ΓöéΓùäΓöÇΓöÇ 200 { accessToken,     Γöé                               Γöé
-  Γöé         refreshToken }     Γöé                               Γöé
-  Γöé                            Γöé                               Γöé
-  Γö£ΓöÇΓöÇ GET /protected ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓû║Γöé                               Γöé
-  Γöé   Authorization: Bearer ΓÇª  Γöé validate signature (no I/O)   Γöé
-  ΓöéΓùäΓöÇΓöÇ 200 OK ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöé                               Γöé
+  │                            │                               │
+  ├── POST /token ───────────►│                               │
+  │   { strategyName:"OIDC" }  ├── verify credential ─────────►│
+  │                            │◄── confirmed ────────────────│
+  │                            │  ┌────────────────────┐   │
+  │                            │  │ Sign JWT (HS256)     │   │
+  │                            │  │ Issue refresh token  │   │
+  │                            │  └────────────────────┘   │
+  │◄── 200 { accessToken,     │                               │
+  │         refreshToken }     │                               │
+  │                            │                               │
+  ├── GET /protected ─────────►│                               │
+  │   Authorization: Bearer …  │ validate signature (no I/O)   │
+  │◄── 200 OK ────────────────│                               │
 ```
 
-Once the client has its JWT, subsequent requests are validated locally by checking the cryptographic signature ΓÇö no network call to any identity provider is needed. This is one of the key performance advantages of JWTs.
+Once the client has its JWT, subsequent requests are validated locally by checking the cryptographic signature — no network call to any identity provider is needed. This is one of the key performance advantages of JWTs.
 
 ---
 
 ## Requirements
 
 - **.NET 8 or later.** The library targets `net8.0`. It does not support .NET Framework or .NET Standard.
-- **Any host that supports `Microsoft.Extensions.DependencyInjection`** ΓÇö ASP.NET Core minimal APIs, MVC, Worker Services, Azure Functions, and plain console apps all work.
+- **Any host that supports `Microsoft.Extensions.DependencyInjection`** — ASP.NET Core minimal APIs, MVC, Worker Services, Azure Functions, and plain console apps all work.
 
 You do _not_ need ASP.NET Core for the core package. The REST endpoints, gRPC interceptor, and SignalR hub filter are in a separate `AspNetCore` package and are entirely optional.
 
@@ -55,7 +55,7 @@ You do _not_ need ASP.NET Core for the core package. The REST endpoints, gRPC in
 
 There are three packages. Install only the ones your project needs.
 
-### Core ΓÇö required
+### Core — required
 
 The core package contains all four built-in strategies, JWT issuance, the refresh token store, and in-memory caching. It has **no ASP.NET Core dependency**, so it works in any .NET 8 host.
 
@@ -63,7 +63,7 @@ The core package contains all four built-in strategies, JWT issuance, the refres
 dotnet add package Primitives.Authentication
 ```
 
-### Server ΓÇö ASP.NET Core only
+### Server — ASP.NET Core only
 
 Add this if you want to expose `POST /token` HTTP endpoints, protect routes with `[Authorize]`, or use the built-in gRPC interceptor or SignalR hub filter.
 
@@ -71,9 +71,9 @@ Add this if you want to expose `POST /token` HTTP endpoints, protect routes with
 dotnet add package Primitives.Authentication.AspNetCore
 ```
 
-### Client ΓÇö for services that call other protected APIs
+### Client — for services that call other protected APIs
 
-Add this to services that need to _attach_ tokens to outbound requests ΓÇö HTTP, gRPC, SignalR, or message queues.
+Add this to services that need to _attach_ tokens to outbound requests — HTTP, gRPC, SignalR, or message queues.
 
 ```bash
 dotnet add package Primitives.Authentication.Client
@@ -81,7 +81,7 @@ dotnet add package Primitives.Authentication.Client
 
 ---
 
-## Step 1 ΓÇö Register a strategy
+## Step 1 — Register a strategy
 
 Open your `Program.cs` (or `Startup.cs`) and chain the credential strategies you need on `AddAuthentication()`:
 
@@ -107,14 +107,14 @@ builder.Services
 
 **What each call does:**
 
-- **`AddAuthentication()`** ΓÇö registers the strategy factory (`IAuthenticationStrategyFactory`), the token issuance service (`ITokenIssuanceService`), in-memory caches, and the refresh token store. This is the libraryΓÇÖs DI root. It does not conflict with ASP.NET CoreΓÇÖs own `AddAuthentication()` ΓÇö they operate at different layers.
+- **`AddAuthentication()`** — registers the strategy factory (`IAuthenticationStrategyFactory`), the token issuance service (`ITokenIssuanceService`), in-memory caches, and the refresh token store. This is the library’s DI root. It does not conflict with ASP.NET Core’s own `AddAuthentication()` — they operate at different layers.
 
-- **`AddUsernamePassword(o => ΓÇª)`** ΓÇö registers a named strategy called `"UsernamePassword"`. When called, it encodes the configured `Username:Password` as Base-64 and validates the credential. The plain-text password is kept only in memory and never written to disk.
+- **`AddUsernamePassword(o => …)`** — registers a named strategy called `"UsernamePassword"`. When called, it encodes the configured `Username:Password` as Base-64 and validates the credential. The plain-text password is kept only in memory and never written to disk.
 
-- **`AddJwtTokenIssuance(o => ΓÇª)`** ΓÇö tells the library how to produce JWTs after a successful authentication:
+- **`AddJwtTokenIssuance(o => …)`** — tells the library how to produce JWTs after a successful authentication:
   - `Issuer` and `Audience` are embedded in every JWT as the `iss` and `aud` claims. Your validation middleware must expect the same values, or tokens will be rejected.
-  - `SigningKey` is the HMAC-SHA256 secret used to sign tokens. It must be at least 32 characters. **Store it in a secrets manager** ΓÇö Azure Key Vault, AWS Secrets Manager, or `dotnet user-secrets` in development. Anyone with this key can forge valid tokens.
-  - `AccessTokenLifetime` controls how long a JWT is valid. 15 minutes is a common production value ΓÇö short enough that a leaked token has limited usefulness.
+  - `SigningKey` is the HMAC-SHA256 secret used to sign tokens. It must be at least 32 characters. **Store it in a secrets manager** — Azure Key Vault, AWS Secrets Manager, or `dotnet user-secrets` in development. Anyone with this key can forge valid tokens.
+  - `AccessTokenLifetime` controls how long a JWT is valid. 15 minutes is a common production value — short enough that a leaked token has limited usefulness.
   - `RefreshTokenLifetime` controls how long the client can exchange refresh tokens for new access tokens without re-logging in.
 
 <div class="bd-callout bd-callout-tip">
@@ -128,7 +128,7 @@ builder.Services
 
 ---
 
-## Step 2 ΓÇö Issue a JWT
+## Step 2 — Issue a JWT
 
 Inject `ITokenIssuanceService` into any class that needs to authenticate a user or service, and call `AuthenticateAsync` with the name of the strategy you registered:
 
@@ -144,7 +144,7 @@ public class LoginService(ITokenIssuanceService tokenService)
         if (!result.IsSuccess)
         {
             // result.ErrorMessage is a human-readable failure reason.
-            // Log it, but be careful about what you return to the client ΓÇö
+            // Log it, but be careful about what you return to the client —
             // avoid leaking which part of the credential was wrong.
             throw new UnauthorizedAccessException(result.ErrorMessage);
         }
@@ -162,8 +162,8 @@ public class LoginService(ITokenIssuanceService tokenService)
 What `AuthenticateAsync` does internally, step by step:
 
 1. Looks up the strategy named `"UsernamePassword"` via `IAuthenticationStrategyFactory`.
-2. Calls `strategy.CanHandleAsync()` ΓÇö a cheap pre-check that returns `false` if required options are missing (e.g. no password configured). If it returns `false`, authentication is skipped and a failure result is returned immediately.
-3. Calls `strategy.AuthenticateAsync()` ΓÇö the actual credential verification.
+2. Calls `strategy.CanHandleAsync()` — a cheap pre-check that returns `false` if required options are missing (e.g. no password configured). If it returns `false`, authentication is skipped and a failure result is returned immediately.
+3. Calls `strategy.AuthenticateAsync()` — the actual credential verification.
 4. On success, builds a JWT with `iss`, `aud`, `sub`, `iat`, `exp`, and any strategy-specific claims.
 5. Signs the JWT with HS256 using the configured `SigningKey`.
 6. Generates a cryptographically random 256-bit refresh token and stores it with the configured expiry.
@@ -173,7 +173,7 @@ Strategy names are **case-insensitive**. `"UsernamePassword"` and `"usernamepass
 
 ---
 
-## Step 3 ΓÇö Refresh a token
+## Step 3 — Refresh a token
 
 Access tokens are short-lived by design. When one expires, the client exchanges its refresh token for a fresh pair without re-entering credentials. This is the standard OAuth 2.0 refresh token flow:
 
@@ -187,22 +187,22 @@ if (!refreshed.IsSuccess)
     return Unauthorized();
 }
 
-// The new access token ΓÇö the 15-minute window starts fresh
+// The new access token — the 15-minute window starts fresh
 var newAccessToken  = refreshed.AccessToken!;
 
-// The new refresh token ΓÇö the old one is permanently invalid from this point
+// The new refresh token — the old one is permanently invalid from this point
 var newRefreshToken = refreshed.RefreshToken!;
 ```
 
-**Refresh token rotation** is applied on every refresh: the old token is revoked the instant the new one is issued. This is a security requirement ΓÇö if a token is somehow intercepted, the attacker can only use it once before the legitimate client rotates it.
+**Refresh token rotation** is applied on every refresh: the old token is revoked the instant the new one is issued. This is a security requirement — if a token is somehow intercepted, the attacker can only use it once before the legitimate client rotates it.
 
-**Reuse detection:** if a client presents a refresh token that has _already been rotated_ (a sign that it was stolen and used by an attacker before the legitimate client could rotate it), the library immediately revokes the entire chain of successor tokens. The attackerΓÇÖs session ends, and the user must log in again. This behaviour follows [RFC 9700 ΓÇö OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/rfc9700).
+**Reuse detection:** if a client presents a refresh token that has _already been rotated_ (a sign that it was stolen and used by an attacker before the legitimate client could rotate it), the library immediately revokes the entire chain of successor tokens. The attacker’s session ends, and the user must log in again. This behaviour follows [RFC 9700 — OAuth 2.0 Security Best Current Practice](https://datatracker.ietf.org/doc/html/rfc9700).
 
 ---
 
-## Step 4 ΓÇö Expose REST endpoints (ASP.NET Core only)
+## Step 4 — Expose REST endpoints (ASP.NET Core only)
 
-If your host is an ASP.NET Core app, you can expose the full token API ΓÇö issue, refresh, revoke ΓÇö with a single call and no custom controllers:
+If your host is an ASP.NET Core app, you can expose the full token API — issue, refresh, revoke — with a single call and no custom controllers:
 
 ```csharp
 // After app.UseAuthentication() and app.UseAuthorization()
@@ -217,7 +217,7 @@ This mounts three routes:
 | `POST` | `/token/refresh` | Exchange a refresh token for a new pair |
 | `POST` | `/token/revoke` | Invalidate a refresh token immediately |
 
-Example ΓÇö authenticate from a shell:
+Example — authenticate from a shell:
 
 ```bash
 curl -X POST https://myapp.example.com/token \
@@ -227,37 +227,37 @@ curl -X POST https://myapp.example.com/token \
 
 ```json
 {
-  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9ΓÇª",
+  "accessToken":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…",
   "refreshToken": "dGhpcyBpcyBhIHJlZnJlc2ggdG9rZW4",
   "tokenType":    "Bearer",
   "expiresAt":    "2026-05-10T15:00:00+00:00"
 }
 ```
 
-All three endpoints call `.AllowAnonymous()` internally ΓÇö the credential check happens inside the strategy, not at the HTTP middleware layer.
+All three endpoints call `.AllowAnonymous()` internally — the credential check happens inside the strategy, not at the HTTP middleware layer.
 
 <div class="bd-callout bd-callout-danger">
 <strong>Apply rate limiting to <code>POST /token</code>.</strong> Without it, the endpoint can be
-used for credential stuffing ΓÇö automated attempts to guess passwords at scale. Use
+used for credential stuffing — automated attempts to guess passwords at scale. Use
 <code>builder.Services.AddRateLimiter()</code> and apply a fixed-window or sliding-window policy
 to the token endpoint in production.
 </div>
 
 ---
 
-## Step 5 ΓÇö Protect your API routes (ASP.NET Core only)
+## Step 5 — Protect your API routes (ASP.NET Core only)
 
 To validate inbound JWTs on protected routes, add JWT Bearer validation with the same signing parameters:
 
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddJwtTokenIssuance(o => { ΓÇª })
+    .AddJwtTokenIssuance(o => { … })
     .AddPrimitivesJwtBearer();  // uses the same Issuer, Audience, SigningKey
 ```
 
 ```csharp
-// Minimal API ΓÇö only accepts requests with a valid Bearer token
+// Minimal API — only accepts requests with a valid Bearer token
 app.MapGet("/orders", (ClaimsPrincipal user) =>
 {
     var subject = user.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -265,16 +265,16 @@ app.MapGet("/orders", (ClaimsPrincipal user) =>
 })
 .RequireAuthorization();
 
-// Controller ΓÇö same effect via attribute
+// Controller — same effect via attribute
 [Authorize]
 public IActionResult GetOrders() => Ok(GetOrders(User.Identity!.Name));
 ```
 
 During validation the library checks:
-- **Signature** ΓÇö the JWT was signed with the configured `SigningKey`
-- **Expiry** ΓÇö the `exp` claim has not passed
-- **Issuer** ΓÇö the `iss` claim matches `JwtOptions.Issuer`
-- **Audience** ΓÇö the `aud` claim matches `JwtOptions.Audience`
+- **Signature** — the JWT was signed with the configured `SigningKey`
+- **Expiry** — the `exp` claim has not passed
+- **Issuer** — the `iss` claim matches `JwtOptions.Issuer`
+- **Audience** — the `aud` claim matches `JwtOptions.Audience`
 
 No network call is made during validation. The signature check is entirely local.
 
@@ -282,12 +282,12 @@ No network call is made during validation. The signature check is entirely local
 
 ## Registering multiple strategies
 
-You can register as many strategies as you like. They are completely independent ΓÇö each gets its own name and its own configuration block:
+You can register as many strategies as you like. They are completely independent — each gets its own name and its own configuration block:
 
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddOidc("AzureAD", o =>           // for internal users ΓÇö Azure AD
+    .AddOidc("AzureAD", o =>           // for internal users — Azure AD
     {
         o.Authority    = "https://login.microsoftonline.com/{tenant}/v2.0";
         o.ClientId     = config["AzureAD:ClientId"]!;
@@ -301,13 +301,13 @@ builder.Services
     {
         o.ApiKey = config["Partners:B:Key"]!;
     })
-    .AddJwtTokenIssuance(o => { ΓÇª });
+    .AddJwtTokenIssuance(o => { … });
 ```
 
 Choose which strategy to use at the point of authentication:
 
 ```csharp
-// In a minimal API handler ΓÇö pick strategy based on request header
+// In a minimal API handler — pick strategy based on request header
 app.MapPost("/token", async (HttpContext ctx, ITokenIssuanceService tokens) =>
 {
     var strategyName = ctx.Request.Headers["X-Auth-Strategy"].FirstOrDefault()
@@ -322,27 +322,27 @@ app.MapPost("/token", async (HttpContext ctx, ITokenIssuanceService tokens) =>
 
 ## Runtime strategy switching (advanced)
 
-If you need to select a strategy dynamically ΓÇö for example, based on a per-request claim or a
-tenant configuration stored in a database ΓÇö inject `IAuthenticationStrategyFactory` directly:
+If you need to select a strategy dynamically — for example, based on a per-request claim or a
+tenant configuration stored in a database — inject `IAuthenticationStrategyFactory` directly:
 
 ```csharp
 var factory  = sp.GetRequiredService<IAuthenticationStrategyFactory>();
 var strategy = factory.GetStrategy("Kerberos");
 
 var rawResult = await strategy.AuthenticateAsync(ct);
-// rawResult.AccessToken is the Negotiate token ΓÇö NOT a JWT
+// rawResult.AccessToken is the Negotiate token — NOT a JWT
 // To wrap it in a JWT, pass the result to ITokenIssuanceService instead
 ```
 
 ---
 
-## WhatΓÇÖs next
+## What’s next
 
-- **[Strategies]({{ '/authentication/strategies/' | relative_url }})** ΓÇö understand when to use OIDC vs API Key vs Kerberos
-- **[Token Endpoints]({{ '/authentication/server/token-endpoints/' | relative_url }})** ΓÇö full route reference and security hardening
-- **[JWT Bearer Validation]({{ '/authentication/server/jwt-bearer/' | relative_url }})** ΓÇö protect your controllers and minimal API routes
-- **[HTTP Client]({{ '/authentication/client/http/' | relative_url }})** ΓÇö auto-attach tokens to every outbound `HttpClient` request
-- **[Caching]({{ '/authentication/caching/' | relative_url }})** ΓÇö swap to Redis for multi-instance deployments
+- **[Strategies]({{ '/authentication/strategies/' | relative_url }})** — understand when to use OIDC vs API Key vs Kerberos
+- **[Token Endpoints]({{ '/authentication/server/token-endpoints/' | relative_url }})** — full route reference and security hardening
+- **[JWT Bearer Validation]({{ '/authentication/server/jwt-bearer/' | relative_url }})** — protect your controllers and minimal API routes
+- **[HTTP Client]({{ '/authentication/client/http/' | relative_url }})** — auto-attach tokens to every outbound `HttpClient` request
+- **[Caching]({{ '/authentication/caching/' | relative_url }})** — swap to Redis for multi-instance deployments
 
 ---
 
@@ -380,7 +380,7 @@ builder.Services
     });
 ```
 
-You can chain as many strategies as needed ΓÇö they are all registered and resolved by name:
+You can chain as many strategies as needed — they are all registered and resolved by name:
 
 ```csharp
 builder.Services
@@ -436,8 +436,8 @@ Strategy names are **case-insensitive** and match the `Name` property on each st
 ```csharp
 var refreshed = await tokenService.RefreshAsync(oldRefreshToken, ct);
 
-// refreshed.AccessToken  ΓåÆ new signed JWT
-// refreshed.RefreshToken ΓåÆ new refresh token (old one is permanently revoked)
+// refreshed.AccessToken  → new signed JWT
+// refreshed.RefreshToken → new refresh token (old one is permanently revoked)
 ```
 
 > **Security note:** The old refresh token is revoked the instant rotation succeeds.  

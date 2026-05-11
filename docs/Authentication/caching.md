@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Caching
@@ -11,7 +11,7 @@ permalink: /authentication/caching/
 Every time `ITokenIssuanceService.AuthenticateAsync()` is called, the underlying strategy could
 make a network round-trip to an identity provider (OIDC), perform a database lookup, or execute
 some other potentially slow operation. Without caching, a busy service that authenticates on every
-request would add that latency to every operation ΓÇö and risk hitting rate limits imposed by
+request would add that latency to every operation — and risk hitting rate limits imposed by
 the identity provider.
 
 Token caching solves this by storing the `AuthenticationResult` after the first successful
@@ -44,8 +44,8 @@ Both are automatically registered by `AddJwtTokenIssuance()`. To replace them wi
 ```csharp
 builder.Services
     .AddAuthentication()
-    .AddOidc(o => { ΓÇª })
-    .AddJwtTokenIssuance(o => { ΓÇª })
+    .AddOidc(o => { … })
+    .AddJwtTokenIssuance(o => { … })
     .AddResultCache(o =>
     {
         o.EarlyExpiryBuffer = TimeSpan.FromSeconds(30); // default
@@ -61,7 +61,7 @@ The default in-memory implementation is suitable for:
 
 ---
 
-## Distributed cache (Redis, SQL Server, ΓÇª)
+## Distributed cache (Redis, SQL Server, …)
 
 For multi-instance deployments (Kubernetes, Azure App Service, etc.), replace both stores with `IDistributedCache`-backed implementations:
 
@@ -75,13 +75,13 @@ builder.Services.AddStackExchangeRedisCache(o =>
 // 2. Replace the default in-memory implementations
 builder.Services
     .AddAuthentication()
-    .AddOidc(o => { ΓÇª })
-    .AddJwtTokenIssuance(o => { ΓÇª })
+    .AddOidc(o => { … })
+    .AddJwtTokenIssuance(o => { … })
     .AddDistributedResultCache()         // replaces IAuthenticationResultCache
     .AddDistributedRefreshTokenStore();  // replaces IRefreshTokenStore
 ```
 
-Both methods use `services.Replace(ΓÇª)` so they override the defaults registered by `AddJwtTokenIssuance()` without needing to remove them first.
+Both methods use `services.Replace(…)` so they override the defaults registered by `AddJwtTokenIssuance()` without needing to remove them first.
 
 ---
 
@@ -90,9 +90,9 @@ Both methods use `services.Replace(ΓÇª)` so they override the defaults regist
 | Store | Key format | Example |
 |---|---|---|
 | Auth result cache | `prim:auth:{strategyName}` | `prim:auth:OIDC` |
-| Refresh token store | `prim:rt:{token}` | `prim:rt:dGhpcyBpcyBhΓÇª` |
+| Refresh token store | `prim:rt:{token}` | `prim:rt:dGhpcyBpcyBh…` |
 
-Both use absolute expiry ΓÇö the TTL is the token's `ExpiresAt` minus `EarlyExpiryBuffer`.
+Both use absolute expiry — the TTL is the token's `ExpiresAt` minus `EarlyExpiryBuffer`.
 
 ---
 
@@ -125,9 +125,9 @@ Implement either interface to provide a completely custom backing store:
 ```csharp
 public sealed class RedisAuthResultCache : IAuthenticationResultCache
 {
-    public Task<AuthenticationResult?> GetAsync(string key, CancellationToken ct) { ΓÇª }
-    public Task SetAsync(string key, AuthenticationResult result, CancellationToken ct) { ΓÇª }
-    public Task RemoveAsync(string key, CancellationToken ct) { ΓÇª }
+    public Task<AuthenticationResult?> GetAsync(string key, CancellationToken ct) { … }
+    public Task SetAsync(string key, AuthenticationResult result, CancellationToken ct) { … }
+    public Task RemoveAsync(string key, CancellationToken ct) { … }
 }
 
 // Register it as a singleton, replacing the default

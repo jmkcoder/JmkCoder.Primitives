@@ -1,4 +1,4 @@
----
+﻿---
 layout: default
 library: authentication
 title: Username / Password
@@ -36,7 +36,7 @@ services.AddAuthentication()
     });
 ```
 
-To register multiple named credentials ΓÇö for example, different credentials per environment or per calling service:
+To register multiple named credentials — for example, different credentials per environment or per calling service:
 
 ```csharp
 .AddUsernamePassword("ServiceA", o =>
@@ -61,7 +61,7 @@ When `AuthenticateAsync()` is called:
 2. They are concatenated as `Username:Password`.
 3. The result is Base-64 encoded, producing the Basic Auth credential.
 4. An `AuthenticationResult.Success` is returned with the credential as the access token and `Username` as the subject.
-5. The JWT issuance layer then wraps this in a signed JWT ΓÇö the raw Basic credential is not exposed to callers.
+5. The JWT issuance layer then wraps this in a signed JWT — the raw Basic credential is not exposed to callers.
 
 The intermediate byte array is zeroed out after use (`Array.Clear`) to minimize the window during which the plain-text password is in memory.
 
@@ -71,8 +71,8 @@ The intermediate byte array is zeroed out after use (`Array.Clear`) to minimize 
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `Username` | `string` | Γ£à | ΓÇö | Login identifier. Becomes the JWT `sub` claim. |
-| `Password` | `string` | Γ£à | ΓÇö | Plain-text password. Kept only in memory; never written to disk or logs. |
+| `Username` | `string` | ✅ | — | Login identifier. Becomes the JWT `sub` claim. |
+| `Password` | `string` | ✅ | — | Plain-text password. Kept only in memory; never written to disk or logs. |
 | `Realm` | `string?` | | `null` | Optional realm as defined in RFC 7617. Included in the credential string if set. |
 | `Encoding` | `Encoding` | | `UTF-8` | Character encoding applied before Base-64 conversion. Only change this for legacy systems that require a different encoding (e.g. Latin-1). |
 
@@ -90,7 +90,7 @@ Never hardcode it in source.
 
 **HTTPS is required.** Even though the raw password is never transmitted (the JWT is), the
 registration endpoint where credentials are exchanged for tokens must be served over HTTPS.
-A network observer who can intercept the `POST /token` request gets the JWT ΓÇö which is almost
+A network observer who can intercept the `POST /token` request gets the JWT — which is almost
 as bad as getting the password.
 
 **Compare with OIDC.** If your user store supports OAuth 2.0 (Azure AD, Okta, Auth0), prefer the
@@ -103,14 +103,14 @@ identity provider then manages the credential lifecycle, MFA, Conditional Access
 
 `CanHandleAsync()` returns `false` when either `Username` or `Password` is null or whitespace.
 This causes the library to skip `AuthenticateAsync()` entirely and return a failure result with a
-descriptive message ΓÇö useful for catching misconfiguration early (e.g. in a health check).
+descriptive message — useful for catching misconfiguration early (e.g. in a health check).
 
 ---
 
 ## Strategy name
 
 ```
-"UsernamePassword"   (or whatever explicit name you passed to .AddUsernamePassword("name", o => ΓÇª))
+"UsernamePassword"   (or whatever explicit name you passed to .AddUsernamePassword("name", o => …))
 ```
 
 ---
@@ -132,8 +132,8 @@ services.AddAuthentication()
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `Username` | `string` | Γ£à | ΓÇö | Login identifier |
-| `Password` | `string` | Γ£à | ΓÇö | Plain-text password (kept only in memory) |
+| `Username` | `string` | ✅ | — | Login identifier |
+| `Password` | `string` | ✅ | — | Plain-text password (kept only in memory) |
 | `Realm` | `string?` | | `null` | Optional realm per RFC 7617 |
 | `Encoding` | `Encoding` | | `UTF-8` | Encoding used before Base-64 conversion |
 
