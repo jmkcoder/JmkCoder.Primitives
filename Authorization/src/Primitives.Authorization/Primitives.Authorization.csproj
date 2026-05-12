@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Deterministic>true</Deterministic>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>Primitives.Authorization</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>JmkCoder</Authors>
+    <Description>Role-based and permission-based authorization for multi-tenant SaaS. Provides IPermissionService with role assignment, permission checks, and resource-level access control. Pluggable role and permission stores with in-memory defaults.</Description>
+    <PackageTags>authorization;rbac;permissions;roles;saas;multitenancy;nuget</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/jmkcoder/JmkCoder.Primitives</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jmkcoder/JmkCoder.Primitives.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions"             Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging"                          Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions"             Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options"                          Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Primitives.Authorization.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

@@ -49,4 +49,25 @@
   <Folder Name="/Observability/tests/">
     <Project Path="Observability/tests/Primitives.Observability.Tests/Primitives.Observability.Tests.csproj" />
   </Folder>
+  <Folder Name="/FeatureFlags/src/">
+    <Project Path="FeatureFlags/src/Primitives.FeatureFlags/Primitives.FeatureFlags.csproj" />
+  </Folder>
+  <Folder Name="/Authorization/src/">
+    <Project Path="Authorization/src/Primitives.Authorization/Primitives.Authorization.csproj" />
+  </Folder>
+  <Folder Name="/RateLimiting/src/">
+    <Project Path="RateLimiting/src/Primitives.RateLimiting/Primitives.RateLimiting.csproj" />
+  </Folder>
+  <Folder Name="/Auditing/src/">
+    <Project Path="Auditing/src/Primitives.Auditing/Primitives.Auditing.csproj" />
+  </Folder>
+  <Folder Name="/Jobs/src/">
+    <Project Path="Jobs/src/Primitives.Jobs/Primitives.Jobs.csproj" />
+  </Folder>
+  <Folder Name="/Notifications/src/">
+    <Project Path="Notifications/src/Primitives.Notifications/Primitives.Notifications.csproj" />
+  </Folder>
+  <Folder Name="/Billing/src/">
+    <Project Path="Billing/src/Primitives.Billing/Primitives.Billing.csproj" />
+  </Folder>
 </Solution>

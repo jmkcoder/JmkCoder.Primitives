@@ -52,3 +52,5 @@ BenchmarkDotNet.Artifacts/
 
 ## User-specific files
 *.rsuser
+
+Applications/
